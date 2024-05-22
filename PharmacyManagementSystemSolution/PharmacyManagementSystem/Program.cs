@@ -1,5 +1,13 @@
+using EmployeeRequestTrackerAPI.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using PharmacyManagementSystem.Context;
+using PharmacyManagementSystem.Interfaces.Repositories;
+using PharmacyManagementSystem.Interfaces.Services;
+using PharmacyManagementSystem.Models.DBModels;
+using PharmacyManagementSystem.Models.Repositories;
 
 namespace PharmacyManagementSystem
 {
@@ -14,23 +22,70 @@ namespace PharmacyManagementSystem
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddLogging(l => l.AddLog4Net());
+            builder.Services.AddSwaggerGen(option =>
+            {
+                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+                });
+                option.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+            });
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddJwtBearer(options =>
+               {
+                   options.TokenValidationParameters = new TokenValidationParameters()
+                   {
+                       ValidateIssuer = false,
+                       ValidateAudience = false,
+                       ValidateIssuerSigningKey = true,
+                       IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["TokenKey:JWT"]))
+                   };
+
+               });
+
+
+            builder.Services.AddAuthorization(options => {
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+            });
+            builder.Services.AddAuthorization(options => {
+                options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
+            });
+
 
 
             #region contexts
             builder.Services.AddDbContext<DBPharmacyContext>(
-                        options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"))
-                    );
+                options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"))
+            );
             #endregion
 
             #region repositories
-
+            builder.Services.AddScoped<IRepository<int, User>, UserRepository>();
             #endregion
 
             #region services
-
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
             #endregion
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

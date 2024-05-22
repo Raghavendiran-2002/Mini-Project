@@ -1,0 +1,103 @@
+﻿
+
+using EmployeeRequestTrackerAPI.Models.DTOs;
+using PharmacyManagementSystem.Interfaces.Repositories;
+using PharmacyManagementSystem.Interfaces.Services;
+using PharmacyManagementSystem.Models.DBModels;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace PharmacyManagementSystem.Interfaces.Services
+
+{
+    public class UserService : IUserService
+    {
+        private readonly IRepository<int, User> _userRepo;
+        private readonly ITokenService _tokenService;
+
+        public UserService(IRepository<int , User> userRepo, ITokenService tokenService)
+        {
+            _userRepo = userRepo;
+            _tokenService = tokenService;
+        }
+        public async Task<LoginReturnDTO> Login(LoginDTO user)
+        {
+            var userDB = await _userRepo.Get(user.UserId);
+            if(userDB == null)
+            {
+                throw new Exception();
+            }
+            HMACSHA512 hMACSHA = new HMACSHA512(userDB.PasswordHash);
+            var encrypterPass = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
+            bool isPasswordSame = ComparePassword(encrypterPass, userDB.Password);
+            if (isPasswordSame)
+            {
+                LoginReturnDTO loginReturnDTO = MapUserToLoginReturn(userDB);
+                return loginReturnDTO;
+            }
+            throw new Exception();
+        }
+        private LoginReturnDTO MapUserToLoginReturn(User user)
+        {
+            LoginReturnDTO returnDTO = new LoginReturnDTO();
+            returnDTO.EmployeeID = user.UserID;
+            returnDTO.Role = user.Role ?? "User";
+            returnDTO.Token = _tokenService.GenerateToken(user);
+            return returnDTO;
+        }
+        private bool ComparePassword(byte[] encrypterPass, byte[] password)
+        {
+            for (int i = 0; i < encrypterPass.Length; i++)
+            {
+                if (encrypterPass[i] != password[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public async Task<RegisterReturnDTO> Register(RegisterDTO newUser)
+        {
+            User user = null;
+            try
+            {
+                user = MapRegisterDTOToUser(newUser);
+                await _userRepo.Add(user);
+                RegisterReturnDTO registerReturnDTO = MapUserToRegisterReturnDTO(user);
+                return registerReturnDTO;
+            }
+            catch (Exception ) {}
+            throw new Exception();
+        }
+
+        private  RegisterReturnDTO MapUserToRegisterReturnDTO(User user)
+        {   
+            RegisterReturnDTO returnDTO = new RegisterReturnDTO();
+            returnDTO.UserId = user.UserID;
+            returnDTO.Username = user.Username;
+            returnDTO.Email = user.Email;
+            returnDTO.FullName = user.FullName;
+            returnDTO.Address = user.Address;
+            returnDTO.PhoneNumber = user.PhoneNumber;
+            returnDTO.Role = user.Role;
+            return returnDTO;
+
+        }
+
+        private User MapRegisterDTOToUser(RegisterDTO newUser)
+        {
+            User user = new User();
+            user.Username = newUser.Username;
+            HMACSHA512 hMACSHA = new HMACSHA512();
+            user.PasswordHash = hMACSHA.Key;
+            user.Password = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(newUser.Password));
+            user.Email = newUser.Email;
+            user.FullName = newUser.FullName;
+            user.Address = newUser.Address;
+            user.PhoneNumber = newUser.PhoneNumber;
+            user.Role = newUser.Role;
+            return user;
+        }
+    }
+}

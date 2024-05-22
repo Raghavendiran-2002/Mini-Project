@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "877b98e6-62d8-411e-9ef4-6bc425124a90",
+		"name": "PharmacyManagementSystem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19895253"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": 2,\r\n  \"password\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5229/api/UserLoginRegister/Login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5229",
+					"path": [
+						"api",
+						"UserLoginRegister",
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"Raghav\",\r\n  \"password\": \"123\",\r\n  \"email\": \"raghav@gmail.com\",\r\n  \"fullName\": \"Raghav\",\r\n  \"address\": \"CBE\",\r\n  \"phoneNumber\": \"435346346\",\r\n  \"role\": \"Admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5229/api/UserLoginRegister/Register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5229",
+					"path": [
+						"api",
+						"UserLoginRegister",
+						"Register"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
