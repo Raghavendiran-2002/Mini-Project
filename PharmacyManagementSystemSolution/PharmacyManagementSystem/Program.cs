@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using PharmacyManagementSystem.Context;
+
 namespace PharmacyManagementSystem
 {
     public class Program
@@ -15,15 +18,17 @@ namespace PharmacyManagementSystem
 
 
             #region contexts
-   
+            builder.Services.AddDbContext<DBPharmacyContext>(
+                        options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"))
+                    );
             #endregion
 
             #region repositories
-    
+
             #endregion
 
             #region services
-           
+
             #endregion
 
             var app = builder.Build();
