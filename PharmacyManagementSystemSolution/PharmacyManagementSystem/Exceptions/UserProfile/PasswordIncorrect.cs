@@ -3,7 +3,7 @@
 namespace PharmacyManagementSystem.Exceptions.UserProfile
 {
     [Serializable]
-    internal class PasswordIncorrect : Exception
+    public  class PasswordIncorrect : Exception
     {
         public PasswordIncorrect()
         {

@@ -1,8 +1,10 @@
 ﻿using EmployeeRequestTrackerAPI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using PharmacyManagementSystem.Context;
+using PharmacyManagementSystem.Exceptions.General;
 using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
@@ -83,11 +85,12 @@ namespace PharmacyManagementUnitTest
             });
 
             //Action
-            Assert.Pass();
-            var result = await userService.Login(new LoginDTO() { UserId = 1, Password = "113" });
+            var result =  userService.Login(new LoginDTO() { UserId = 1, Password = "113" });
 
             //Assert
-            Assert.Pass();
+            var ex = Assert.ThrowsAsync<UnauthorizedAccessException>(() => result);
+            Assert.That(ex.Message, Is.EqualTo("Invalid username and password"));
+
         }
         [Test]
         public async Task UserRegisteredAndLoginWithWrongUserId()
@@ -104,11 +107,13 @@ namespace PharmacyManagementUnitTest
             IUserService userService = new UserService(user, token);
 
             //Action
-            Assert.Pass();
-            var result = await userService.Login(new LoginDTO() { UserId = 6, Password = "113" });
+            
+            var result =  userService.Login(new LoginDTO() { UserId = 6, Password = "113" });
 
             //Assert
-            Assert.Pass();
+            var ex = Assert.ThrowsAsync<ItemCannotBeNull>(() => result);
+            Assert.That(ex.Message, Is.EqualTo("6 cannot be null"));
+           
         }
     }
 }

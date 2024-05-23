@@ -3,7 +3,7 @@
 namespace PharmacyManagementSystem.Exceptions.UserProfile
 {
     [Serializable]
-    internal class NoUserFound : Exception
+    public class NoUserFound : Exception
     {
         public NoUserFound()
         {
