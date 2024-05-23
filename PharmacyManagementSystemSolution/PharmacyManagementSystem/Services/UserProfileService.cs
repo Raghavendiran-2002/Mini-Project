@@ -56,8 +56,8 @@ namespace PharmacyManagementSystem.Services
             if (user == null)
                 throw new NoUserFound($"User not found with Id : {updatedUser.UserId}");
             var updateUser = MapUpdateUserDTOToUser(user, updatedUser);
-            var newUser = await _userRepo.Update(updateUser);
-            return MapUserToUserProfileReturnDTO(newUser);
+            user = await _userRepo.Update(updateUser);
+            return MapUserToUserProfileReturnDTO(user);
         }
 
         private User MapUpdateUserDTOToUser(User user , UpdateUserDTO updatedUser)
@@ -67,6 +67,7 @@ namespace PharmacyManagementSystem.Services
             user.Username = updatedUser.Username;
             user.FullName = updatedUser.FullName;
             user.PhoneNumber = updatedUser.PhoneNumber;
+            user.Email = updatedUser.Email;
             user.Role = updatedUser.Role;
             return user;
         }

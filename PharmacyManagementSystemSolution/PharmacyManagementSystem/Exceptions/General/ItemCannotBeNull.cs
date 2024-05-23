@@ -3,7 +3,7 @@
 namespace PharmacyManagementSystem.Exceptions.General
 {
     [Serializable]
-    internal class ItemCannotBeNull : Exception
+    public class ItemCannotBeNull : Exception
     {
         public ItemCannotBeNull()
         {
