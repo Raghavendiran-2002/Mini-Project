@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace PharmacyManagementSystem.Models.Repositories
+namespace PharmacyManagementSystem.Exceptions.General
 {
     [Serializable]
     internal class ItemCannotBeNull : Exception

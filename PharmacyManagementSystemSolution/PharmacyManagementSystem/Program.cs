@@ -8,6 +8,7 @@ using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.Repositories;
+using PharmacyManagementSystem.Services;
 
 namespace PharmacyManagementSystem
 {
@@ -62,16 +63,6 @@ namespace PharmacyManagementSystem
 
                });
 
-
-            builder.Services.AddAuthorization(options => {
-                options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-            });
-            builder.Services.AddAuthorization(options => {
-                options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
-            });
-
-
-
             #region contexts
             builder.Services.AddDbContext<DBPharmacyContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"))
@@ -80,11 +71,13 @@ namespace PharmacyManagementSystem
 
             #region repositories
             builder.Services.AddScoped<IRepository<int, User>, UserRepository>();
+            builder.Services.AddScoped<IRepository<int, User>, UserProfileRepositoy>();
             #endregion
 
             #region services
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IUserProfileService, UserProfileService>();
             #endregion
             var app = builder.Build();
 
@@ -95,8 +88,9 @@ namespace PharmacyManagementSystem
                 app.UseSwaggerUI();
             }
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            
 
             app.MapControllers();
 
