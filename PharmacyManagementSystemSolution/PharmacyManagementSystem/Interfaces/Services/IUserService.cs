@@ -1,5 +1,5 @@
-﻿using EmployeeRequestTrackerAPI.Models.DTOs;
-using PharmacyManagementSystem.Models.DBModels;
+﻿using PharmacyManagementSystem.Models.DBModels;
+using PharmacyManagementSystem.Models.DTOs;
 
 namespace PharmacyManagementSystem.Interfaces.Services
 {

@@ -1,9 +1,9 @@
-﻿using EmployeeRequestTrackerAPI.Models.DTOs;
-using log4net.Core;
+﻿using log4net.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
+using PharmacyManagementSystem.Models.DTOs;
 
 namespace PharmacyManagementSystem.Controllers
 {

@@ -1,9 +1,9 @@
 ﻿
 
-using EmployeeRequestTrackerAPI.Models.DTOs;
 using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
+using PharmacyManagementSystem.Models.DTOs;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -25,7 +25,7 @@ namespace PharmacyManagementSystem.Interfaces.Services
             var userDB = await _userRepo.Get(user.UserId);
             if(userDB == null)
             {
-                throw new Exception();
+                throw new UnauthorizedAccessException("Invalid username and password");
             }
             HMACSHA512 hMACSHA = new HMACSHA512(userDB.PasswordHash);
             var encrypterPass = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
@@ -35,12 +35,12 @@ namespace PharmacyManagementSystem.Interfaces.Services
                 LoginReturnDTO loginReturnDTO = MapUserToLoginReturn(userDB);
                 return loginReturnDTO;
             }
-            throw new Exception();
+            throw new UnauthorizedAccessException("Invalid username and password");
         }
         private LoginReturnDTO MapUserToLoginReturn(User user)
         {
             LoginReturnDTO returnDTO = new LoginReturnDTO();
-            returnDTO.EmployeeID = user.UserID;
+            returnDTO.UserID = user.UserID;
             returnDTO.Role = user.Role ?? "User";
             returnDTO.Token = _tokenService.GenerateToken(user);
             return returnDTO;
@@ -68,7 +68,7 @@ namespace PharmacyManagementSystem.Interfaces.Services
                 return registerReturnDTO;
             }
             catch (Exception ) {}
-            throw new Exception();
+            throw new UnauthorizedAccessException("Invalid username and password");
         }
 
         private  RegisterReturnDTO MapUserToRegisterReturnDTO(User user)

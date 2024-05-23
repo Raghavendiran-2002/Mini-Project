@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EmployeeRequestTrackerAPI.Models.DTOs
+namespace PharmacyManagementSystem.Models.DTOs
 {
     public class LoginDTO {
         [Required(ErrorMessage = "User id cannot be empty")]
