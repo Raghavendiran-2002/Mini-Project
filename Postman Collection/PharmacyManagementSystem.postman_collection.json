@@ -7,13 +7,162 @@
 	},
 	"item": [
 		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "ViewProfile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjQiLCJyb2xlIjoiQWRtaW4iLCJleHAiOjE3MTY2Mjc0OTl9.UgOuI2mr4k3a1aoBOBNki2Xq_8qgcLReXKvA1qlanrU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/UserProfile/ViewProfile?Id=4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"UserProfile",
+								"ViewProfile"
+							],
+							"query": [
+								{
+									"key": "Id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProfile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjQiLCJyb2xlIjoiQWRtaW4iLCJleHAiOjE3MTY2Mjc0OTl9.UgOuI2mr4k3a1aoBOBNki2Xq_8qgcLReXKvA1qlanrU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": 2,\r\n  \"username\": \"Rajaram\",\r\n  \"email\": \"string\",\r\n  \"fullName\": \"string\",\r\n  \"address\": \"string\",\r\n  \"phoneNumber\": \"string\",\r\n  \"role\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5229/api/UserProfile/UpdateProfile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"UserProfile",
+								"UpdateProfile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ResetPassword",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjQiLCJyb2xlIjoiQWRtaW4iLCJleHAiOjE3MTY2Mjc0OTl9.UgOuI2mr4k3a1aoBOBNki2Xq_8qgcLReXKvA1qlanrU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": 4,\r\n  \"previousPassword\": \"1234\",\r\n  \"newPassword\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5229/api/UserProfile/ResetPassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"UserProfile",
+								"ResetPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteProfile",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/UserProfile/DeleteProfile?Id=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"UserProfile",
+								"DeleteProfile"
+							],
+							"query": [
+								{
+									"key": "Id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Login",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"userId\": 2,\r\n  \"password\": \"123\"\r\n}",
+					"raw": "{\r\n  \"userId\": 4,\r\n  \"password\": \"123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -43,7 +192,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"username\": \"Raghav\",\r\n  \"password\": \"123\",\r\n  \"email\": \"raghav@gmail.com\",\r\n  \"fullName\": \"Raghav\",\r\n  \"address\": \"CBE\",\r\n  \"phoneNumber\": \"435346346\",\r\n  \"role\": \"Admin\"\r\n}",
+					"raw": "{\r\n  \"username\": \"Pranav\",\r\n  \"password\": \"123\",\r\n  \"email\": \"pranav@gmail.com\",\r\n  \"fullName\": \"Pranav\",\r\n  \"address\": \"TJ\",\r\n  \"phoneNumber\": \"435346346\",\r\n  \"role\": \"User\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

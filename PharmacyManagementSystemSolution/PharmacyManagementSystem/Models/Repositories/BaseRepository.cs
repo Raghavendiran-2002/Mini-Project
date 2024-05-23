@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PharmacyManagementSystem.Context;
+using PharmacyManagementSystem.Exceptions.General;
 using PharmacyManagementSystem.Interfaces.Repositories;
 
 namespace PharmacyManagementSystem.Models.Repositories

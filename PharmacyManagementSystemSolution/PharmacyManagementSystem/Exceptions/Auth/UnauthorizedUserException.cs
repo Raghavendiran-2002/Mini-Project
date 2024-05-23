@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace PharmacyManagementSystem.Exceptions
+namespace PharmacyManagementSystem.Exceptions.User
 {
     [Serializable]
     internal class UnauthorizedUserException : Exception
