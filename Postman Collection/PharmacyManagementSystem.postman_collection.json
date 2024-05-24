@@ -312,6 +312,282 @@
 			]
 		},
 		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "AddProduct",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productName\": \"Ddsfdsio4-3m\",\r\n  \"description\": \"Meds\",\r\n  \"price\": 100,\r\n  \"stock\": 5,\r\n  \"categoryID\": 1,\r\n  \"imageUrl\": \"\",\r\n  \"discountID\": 1,\r\n  \"createdAt\": \"2024-05-24T09:43:32.204Z\",\r\n  \"updatedAt\": \"2024-05-24T09:43:32.204Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5229/api/Product/AddProduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Product",
+								"AddProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProductById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Product/ById?Id=6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Product",
+								"ById"
+							],
+							"query": [
+								{
+									"key": "Id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllProducts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProduct",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productID\": 13,\r\n  \"productName\": \"gfjghfjghj\",\r\n  \"description\": \"ghgfhj\",\r\n  \"price\": 0,\r\n  \"stock\": 0,\r\n  \"imageUrl\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5229/api/Product/UpdateProduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Product",
+								"UpdateProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteProduct",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Product?Id=6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Product"
+							],
+							"query": [
+								{
+									"key": "Id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Discount",
+			"item": [
+				{
+					"name": "AddDiscount",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"discountName\": \"string\",\r\n  \"discountPercentage\": 100,\r\n  \"startDate\": \"2024-05-24T10:52:56.126Z\",\r\n  \"endDate\": \"2024-05-24T10:52:56.126Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5229/api/Discount/AddDiscount",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Discount",
+								"AddDiscount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetDiscountById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Discount/ById?Id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Discount",
+								"ById"
+							],
+							"query": [
+								{
+									"key": "Id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllDiscounts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Discount",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Discount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateDiscount",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"discountID\": 2,\r\n  \"discountName\": \"string\",\r\n  \"discountPercentage\": 100,\r\n  \"startDate\": \"2024-05-24T11:20:26.875Z\",\r\n  \"endDate\": \"2024-05-24T11:20:26.875Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5229/api/Discount/updateDiscount",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Discount",
+								"updateDiscount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteDiscount",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Discount?Id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Discount"
+							],
+							"query": [
+								{
+									"key": "Id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Login",
 			"request": {
 				"method": "POST",
