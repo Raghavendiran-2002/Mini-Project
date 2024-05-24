@@ -33,7 +33,7 @@ namespace PharmacyManagementSystem.Models.Repositories
                 await _context.SaveChangesAsync();
                 return obj;
             }
-            throw new ItemCannotBeNull($"{key} cannot be null");
+            throw new ItemCannotBeNull($"Id:{key} not found or deleted already");
         }
 
         public async virtual Task<T> Get(K key)
@@ -41,7 +41,7 @@ namespace PharmacyManagementSystem.Models.Repositories
             var obj = await _entities.FindAsync(key);
             if(obj == null)
             {
-                throw new ItemCannotBeNull($"{key} cannot be null");
+                throw new ItemCannotBeNull($"Id:{key} not found");
             }
             return obj;
         }

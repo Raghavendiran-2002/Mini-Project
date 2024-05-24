@@ -68,6 +68,7 @@ namespace PharmacyManagementSystem.Services
             user.Username = updatedUser.Username;
             user.FullName = updatedUser.FullName;
             user.PhoneNumber = updatedUser.PhoneNumber;
+            user.Email = updatedUser.Email;
             user.Role = updatedUser.Role;
             return user;
         }
