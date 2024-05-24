@@ -17,7 +17,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjQiLCJyb2xlIjoiQWRtaW4iLCJleHAiOjE3MTY2Mjc0OTl9.UgOuI2mr4k3a1aoBOBNki2Xq_8qgcLReXKvA1qlanrU",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjEiLCJyb2xlIjoiVXNlciIsImV4cCI6MTcxNjY0NTc2Mn0.-b5yfyRE0paMeXgisDNI_ECfRidjDcZTOIZha2506cs",
 									"type": "string"
 								}
 							]
@@ -54,7 +54,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjQiLCJyb2xlIjoiQWRtaW4iLCJleHAiOjE3MTY2Mjc0OTl9.UgOuI2mr4k3a1aoBOBNki2Xq_8qgcLReXKvA1qlanrU",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjEiLCJyb2xlIjoiVXNlciIsImV4cCI6MTcxNjY0NTc2Mn0.-b5yfyRE0paMeXgisDNI_ECfRidjDcZTOIZha2506cs",
 									"type": "string"
 								}
 							]
@@ -63,7 +63,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"userId\": 2,\r\n  \"username\": \"Rajaram\",\r\n  \"email\": \"string\",\r\n  \"fullName\": \"string\",\r\n  \"address\": \"string\",\r\n  \"phoneNumber\": \"string\",\r\n  \"role\": \"string\"\r\n}",
+							"raw": "{\r\n  \"userId\": 4,\r\n  \"username\": \"Raghav\",\r\n  \"email\": \"dummy#d\",\r\n  \"fullName\": \"string\",\r\n  \"address\": \"string\",\r\n  \"phoneNumber\": \"string\",\r\n  \"role\": \"string\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -129,10 +129,20 @@
 				{
 					"name": "DeleteProfile",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjEiLCJyb2xlIjoiVXNlciIsImV4cCI6MTcxNjY0NTc2Mn0.-b5yfyRE0paMeXgisDNI_ECfRidjDcZTOIZha2506cs",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5229/api/UserProfile/DeleteProfile?Id=3",
+							"raw": "http://localhost:5229/api/UserProfile/DeleteProfile?Id=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -146,8 +156,154 @@
 							"query": [
 								{
 									"key": "Id",
-									"value": "3"
+									"value": "1"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "AddCategory",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjEiLCJyb2xlIjoiVXNlciIsImV4cCI6MTcxNjY0NTc2Mn0.-b5yfyRE0paMeXgisDNI_ECfRidjDcZTOIZha2506cs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"categoryName\": \"Meds\",\r\n  \"description\": \"Meds are bad\",\r\n  \"imageUrl\": \"hfjdshg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5229/api/Category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCategoryById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Category/ById?Id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Category",
+								"ById"
+							],
+							"query": [
+								{
+									"key": "Id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCategory",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Category?Id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Category"
+							],
+							"query": [
+								{
+									"key": "Id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCategory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"categoryId\": 1,\r\n  \"categoryName\": \"Old\",\r\n  \"description\": \"string\",\r\n  \"imageUrl\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5229/api/Category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Category"
 							]
 						}
 					},
@@ -214,6 +370,38 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjEiLCJyb2xlIjoiVXNlciIsImV4cCI6MTcxNjY0NTc2Mn0.-b5yfyRE0paMeXgisDNI_ECfRidjDcZTOIZha2506cs",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
