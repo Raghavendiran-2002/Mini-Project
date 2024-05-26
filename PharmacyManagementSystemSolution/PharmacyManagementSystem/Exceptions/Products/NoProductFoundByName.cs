@@ -3,7 +3,7 @@
 namespace PharmacyManagementSystem.Exceptions.Products
 {
     [Serializable]
-    internal class NoProductFoundByName : Exception
+    public class NoProductFoundByName : Exception
     {
         public NoProductFoundByName()
         {
