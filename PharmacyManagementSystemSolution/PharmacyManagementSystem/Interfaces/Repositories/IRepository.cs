@@ -1,4 +1,6 @@
-﻿namespace PharmacyManagementSystem.Interfaces.Repositories
+﻿using PharmacyManagementSystem.Models.DBModels;
+
+namespace PharmacyManagementSystem.Interfaces.Repositories
 {
     public interface IRepository<K, T> where T : class
     {
