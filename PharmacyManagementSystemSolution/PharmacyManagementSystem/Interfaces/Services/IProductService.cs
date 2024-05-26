@@ -10,5 +10,10 @@ namespace PharmacyManagementSystem.Interfaces.Services
         public Task<Product> DeleteProduct(int productId);
         public Task<Product> AddProduct(AddProductDTO product);
         public Task<Product> UpdateProduct(UpdateProductDTO product);
+        public Task<IEnumerable<Product>> GetProductByCategoryId(int categoryId);
+
+        public Task<IEnumerable<Product>> GetProductBasedOnAvailability();
+        public Task<IEnumerable<Product>> GetProductByName(string name);
+        public Task<IEnumerable<Product>> GetProductsByPriceRange(int startPrice, int endPrice);
     }
 }

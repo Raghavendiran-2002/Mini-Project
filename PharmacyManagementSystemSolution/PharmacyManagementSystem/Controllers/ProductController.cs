@@ -42,6 +42,7 @@ namespace PharmacyManagementSystem.Controllers
             }
             return BadRequest("All details are not provided. Please check the object");
         }
+
         [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable< Product>), StatusCodes.Status200OK)]
@@ -58,6 +59,90 @@ namespace PharmacyManagementSystem.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError($"Product All :  Access Denied");
+                    return Unauthorized(new ErrorModel(401, ex.Message));
+                }
+            }
+            return BadRequest("All details are not provided. Please check the object");
+        }
+        [Authorize]
+        [HttpGet("FilterCategoryId")]
+        [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductByCategoryId(int categoryId)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = await _productService.GetProductByCategoryId(categoryId);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Product category Id :  Access Denied");
+                    return Unauthorized(new ErrorModel(401, ex.Message));
+                }
+            }
+            return BadRequest("All details are not provided. Please check the object");
+        }
+        [Authorize]
+        [HttpGet("Availability")]
+        [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductAvailability()
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = await _productService.GetProductBasedOnAvailability();
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Product category Id :  Access Denied");
+                    return Unauthorized(new ErrorModel(401, ex.Message));
+                }
+            }
+            return BadRequest("All details are not provided. Please check the object");
+        }
+        [Authorize]
+        [HttpGet("GetProductByName")]
+        [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductName(string productName)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = await _productService.GetProductByName(productName);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Product category Id :  Access Denied");
+                    return Unauthorized(new ErrorModel(401, ex.Message));
+                }
+            }
+            return BadRequest("All details are not provided. Please check the object");
+        }
+        [Authorize]
+        [HttpGet("GetProductByPriceRange")]
+        [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductPriceRange(int startPrice, int endPrice)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = await _productService.GetProductsByPriceRange(startPrice, endPrice);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Product category Id :  Access Denied");
                     return Unauthorized(new ErrorModel(401, ex.Message));
                 }
             }

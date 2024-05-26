@@ -317,11 +317,21 @@
 				{
 					"name": "AddProduct",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjMiLCJyb2xlIjoiQWRtaW4iLCJleHAiOjE3MTY4NjQwMjd9.WkbuRn7kSYlWwMrsC_VNPUQZN6-mW359lHXs9_0QIFY",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"productName\": \"Ddsfdsio4-3m\",\r\n  \"description\": \"Meds\",\r\n  \"price\": 100,\r\n  \"stock\": 5,\r\n  \"categoryID\": 1,\r\n  \"imageUrl\": \"\",\r\n  \"discountID\": 1,\r\n  \"createdAt\": \"2024-05-24T09:43:32.204Z\",\r\n  \"updatedAt\": \"2024-05-24T09:43:32.204Z\"\r\n}",
+							"raw": "{\r\n  \"productName\": \"soap\",\r\n  \"description\": \"stridsgfsghdfsng\",\r\n  \"price\": 54,\r\n  \"stock\": 5,\r\n  \"categoryID\": 1,\r\n  \"imageUrl\": \"string\",\r\n  \"discountID\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -329,7 +339,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5229/api/Product/AddProduct",
+							"raw": "http://localhost:5229/api/Product/AddProduct'",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -338,7 +348,7 @@
 							"path": [
 								"api",
 								"Product",
-								"AddProduct"
+								"AddProduct'"
 							]
 						}
 					},
@@ -441,6 +451,112 @@
 								{
 									"key": "Id",
 									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProductByCategoryId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Product/FilterCategoryId?categoryId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Product",
+								"FilterCategoryId"
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProductBasedOnAvailability",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Product/Availability",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Product",
+								"Availability"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProductByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Product/GetProductByName?productName=soap",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Product",
+								"GetProductByName"
+							],
+							"query": [
+								{
+									"key": "productName",
+									"value": "soap"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProductByPriceRange",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Product/GetProductByPriceRange?startPrice=100&endPrice=500",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Product",
+								"GetProductByPriceRange"
+							],
+							"query": [
+								{
+									"key": "startPrice",
+									"value": "100"
+								},
+								{
+									"key": "endPrice",
+									"value": "500"
 								}
 							]
 						}
@@ -653,7 +769,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjEiLCJyb2xlIjoiVXNlciIsImV4cCI6MTcxNjY0NTc2Mn0.-b5yfyRE0paMeXgisDNI_ECfRidjDcZTOIZha2506cs",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjMiLCJyb2xlIjoiQWRtaW4iLCJleHAiOjE3MTY4NjQwMjd9.WkbuRn7kSYlWwMrsC_VNPUQZN6-mW359lHXs9_0QIFY",
 				"type": "string"
 			}
 		]
