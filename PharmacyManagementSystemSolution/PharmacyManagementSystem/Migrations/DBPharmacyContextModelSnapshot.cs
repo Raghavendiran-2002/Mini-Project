@@ -265,8 +265,32 @@ namespace PharmacyManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartID"), 1L, 1);
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("ShoppingCarts");
+                });
+
+            modelBuilder.Entity("PharmacyManagementSystem.Models.DBModels.ShoppingCartItem", b =>
+                {
+                    b.Property<int>("CartItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemID"), 1L, 1);
+
                     b.Property<DateTime>("AddedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("CartID")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
@@ -274,16 +298,13 @@ namespace PharmacyManagementSystem.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                    b.HasKey("CartItemID");
 
-                    b.HasKey("CartID");
+                    b.HasIndex("CartID");
 
                     b.HasIndex("ProductID");
 
-                    b.HasIndex("UserID");
-
-                    b.ToTable("ShoppingCarts");
+                    b.ToTable("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("PharmacyManagementSystem.Models.DBModels.User", b =>
@@ -422,21 +443,32 @@ namespace PharmacyManagementSystem.Migrations
 
             modelBuilder.Entity("PharmacyManagementSystem.Models.DBModels.ShoppingCart", b =>
                 {
-                    b.HasOne("PharmacyManagementSystem.Models.DBModels.Product", "Product")
-                        .WithMany("ShoppingCarts")
-                        .HasForeignKey("ProductID")
+                    b.HasOne("PharmacyManagementSystem.Models.DBModels.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PharmacyManagementSystem.Models.DBModels.User", "User")
-                        .WithMany("ShoppingCarts")
-                        .HasForeignKey("UserID")
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PharmacyManagementSystem.Models.DBModels.ShoppingCartItem", b =>
+                {
+                    b.HasOne("PharmacyManagementSystem.Models.DBModels.ShoppingCart", "ShoppingCart")
+                        .WithMany("ShoppingCartItems")
+                        .HasForeignKey("CartID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PharmacyManagementSystem.Models.DBModels.Product", "Product")
+                        .WithMany("ShoppingCartItems")
+                        .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
 
-                    b.Navigation("User");
+                    b.Navigation("ShoppingCart");
                 });
 
             modelBuilder.Entity("PharmacyManagementSystem.Models.DBModels.Category", b =>
@@ -462,7 +494,12 @@ namespace PharmacyManagementSystem.Migrations
 
                     b.Navigation("Reviews");
 
-                    b.Navigation("ShoppingCarts");
+                    b.Navigation("ShoppingCartItems");
+                });
+
+            modelBuilder.Entity("PharmacyManagementSystem.Models.DBModels.ShoppingCart", b =>
+                {
+                    b.Navigation("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("PharmacyManagementSystem.Models.DBModels.User", b =>
@@ -470,8 +507,6 @@ namespace PharmacyManagementSystem.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("ShoppingCarts");
                 });
 #pragma warning restore 612, 618
         }

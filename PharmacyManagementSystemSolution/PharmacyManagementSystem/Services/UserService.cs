@@ -14,11 +14,13 @@ namespace PharmacyManagementSystem.Interfaces.Services
     {
         private readonly IRepository<int, User> _userRepo;
         private readonly ITokenService _tokenService;
+        private readonly IShoppingCartRepository<int, ShoppingCart> _cartRepo;
 
-        public UserService(IRepository<int , User> userRepo, ITokenService tokenService)
+        public UserService(IRepository<int , User> userRepo,IShoppingCartRepository<int, ShoppingCart> cartRepo, ITokenService tokenService)
         {
             _userRepo = userRepo;
             _tokenService = tokenService;
+            _cartRepo = cartRepo;
         }
         public async Task<LoginReturnDTO> Login(LoginDTO user)
         {
@@ -63,8 +65,9 @@ namespace PharmacyManagementSystem.Interfaces.Services
             try
             {
                 user = MapRegisterDTOToUser(newUser);
-                await _userRepo.Add(user);
+                await _userRepo.Add(user);              
                 RegisterReturnDTO registerReturnDTO = MapUserToRegisterReturnDTO(user);
+                await _cartRepo.Add(new ShoppingCart() { UserID = registerReturnDTO.UserId });
                 return registerReturnDTO;
             }
             catch (Exception ) {}

@@ -7,6 +7,8 @@ namespace PharmacyManagementSystem.Models.DTOs.ShoppingCartDTOs
         [Required]
         public int UserID { get; set; }
         [Required]
+        public int CartID { get; set; }
+        [Required]
         public int ProductID { get; set; }
         [Required]
         public int Quantity { get; set; }

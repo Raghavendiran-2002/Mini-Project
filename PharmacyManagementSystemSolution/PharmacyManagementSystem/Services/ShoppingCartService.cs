@@ -7,55 +7,59 @@ namespace PharmacyManagementSystem.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
-        private readonly IRepository<int, ShoppingCart> _shoppingRepo;
+        private readonly IShoppingCartRepository<int, ShoppingCart> _shoppingRepo;
+        private readonly IRepository<int, ShoppingCartItem> _shoppingCartItem;
+        private readonly IProductRepository<int, Product> _productRepo;
 
-        public ShoppingCartService(IRepository<int , ShoppingCart> shoppingRepo)
+        public ShoppingCartService(IShoppingCartRepository<int, ShoppingCart> shoppingRepo, IRepository<int, ShoppingCartItem> shoppingCartItem, IProductRepository<int, Product> productRepo)
         {
             _shoppingRepo = shoppingRepo;
+            _shoppingCartItem = shoppingCartItem;
+            _productRepo = productRepo;
         }
 
-        public async Task<ShoppingCart> AddItemToCart(AddShoppingCartItemDTO addShoppingCartDTO)
+        public async Task<ShoppingCartItem> AddItemToCart(AddShoppingCartItemDTO addShoppingCartDTO)
+        {            
+            ShoppingCartItem cartItem = MapAddShoppingCartItemDTOToShoppingCartItem(addShoppingCartDTO);
+            var item = (await _shoppingCartItem.Add(cartItem));
+            return item;
+        }
+
+        private ShoppingCartItem MapAddShoppingCartItemDTOToShoppingCartItem(AddShoppingCartItemDTO addShoppingCartDTO)
         {
-            ShoppingCart shoppingCart = MapAddShoppingCartItemDTOToShoppingCart(addShoppingCartDTO);    
-            var cart = await _shoppingRepo.Add(shoppingCart);
+            ShoppingCartItem cartItem = new ShoppingCartItem();
+            cartItem.CartID = addShoppingCartDTO.CartID;
+            cartItem.ProductID = addShoppingCartDTO.ProductID;
+            cartItem.Quantity = addShoppingCartDTO.Quantity;
+            return cartItem;
+        }
+
+        public async Task<ShoppingCart> GetCartByUserId(int userId)
+        {
+            var cartIt = await _shoppingRepo.Get(userId);
+            return cartIt;
+        }
+
+        public async Task<ShoppingCartItem> RemoveItemFromCart(int ShoppingCartItemId)
+        {
+            var cart = await _shoppingCartItem.Delete(ShoppingCartItemId);
             return cart;
         }
 
-        private ShoppingCart MapAddShoppingCartItemDTOToShoppingCart(AddShoppingCartItemDTO addShoppingCartDTO)
+        public async Task<ShoppingCartItem> UpdateItemInCart(UpdateItemInCartDTO updateItemInCartDTO)
         {
-            ShoppingCart cart = new ShoppingCart();
-            cart.UserID = addShoppingCartDTO.UserID;
-            cart.ProductID = addShoppingCartDTO.ProductID;
-            cart.Quantity = addShoppingCartDTO.Quantity;
-            return cart;
+            ShoppingCartItem cartItem = (await _shoppingCartItem.Get(updateItemInCartDTO.CartItemID));
+            cartItem = MapUpdateCartItemDTOtoShoppingCartItem(cartItem, updateItemInCartDTO);
+            cartItem = await _shoppingCartItem.Update(cartItem);
+            return cartItem;
         }
 
-        public async Task<IEnumerable<ShoppingCart>> GetAllCartByUserId(int userId)
+        private ShoppingCartItem MapUpdateCartItemDTOtoShoppingCartItem(ShoppingCartItem cartItem, UpdateItemInCartDTO updateItemInCartDTO)
         {
-            var cart = (await _shoppingRepo.Get()).Where(c => c.UserID == userId).ToList();
-            return cart;
-        }
-
-        public async Task<ShoppingCart> RemoveItemFromCart(int cartId)
-        {
-            var cart =await _shoppingRepo.Delete(cartId);
-            return cart;
-        }
-
-        public async Task<ShoppingCart> UpdateItemInCart(UpdateItemInCartDTO updateItemInCartDTO)
-        {
-            ShoppingCart cart =await _shoppingRepo.Get(updateItemInCartDTO.CartID);
-            cart = MapUpdateItemInCartDTOToShoppingCart(cart , updateItemInCartDTO);
-            var shoppingCart = await _shoppingRepo.Update(cart);
-            return shoppingCart;
-        }
-
-        private ShoppingCart MapUpdateItemInCartDTOToShoppingCart(ShoppingCart cart, UpdateItemInCartDTO updateItemInCartDTO)
-        {
-            cart.ProductID = updateItemInCartDTO.ProductID;
-            cart.UserID = updateItemInCartDTO.UserID;
-            cart.Quantity = updateItemInCartDTO.Quantity;
-            return cart;
+            cartItem.ProductID = updateItemInCartDTO.ProductID;
+            cartItem.CartID = updateItemInCartDTO.CartID;
+            cartItem.Quantity = updateItemInCartDTO.Quantity;
+            return cartItem;
         }
     }
 }

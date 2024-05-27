@@ -28,6 +28,6 @@ namespace PharmacyManagementSystem.Models.DBModels
 
         public ICollection<OrderItem> OrderItems { get; set; }
         public ICollection<Review> Reviews { get; set; }
-        public ICollection<ShoppingCart> ShoppingCarts { get; set; }
+        public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
     }
 }
