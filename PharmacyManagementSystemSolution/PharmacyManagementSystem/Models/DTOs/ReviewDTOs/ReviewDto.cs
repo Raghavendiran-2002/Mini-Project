@@ -4,9 +4,9 @@ namespace PharmacyManagementSystem.Models.DTOs.ReviewDTOs
 {
     public class ReviewDto
     {
-        [Required]
+        [Required(ErrorMessage = "User id cannot be empty")]
         public int UserID { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Product id cannot be empty")]
         public int ProductID { get; set; }
         public int Rating { get; set; }
         public string Comment { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PharmacyManagementSystem.Exceptions.UserProfile;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.DTOs;
@@ -34,6 +35,11 @@ namespace PharmacyManagementSystem.Controllers
                     var result = await _userService.UpdateProfile(updateUser);
                     return Ok(result);
                 }
+                catch (NoUserFound ex)
+                {
+                    _logger.LogError($"Update Profile - No user Found Profile Id : {updateUser.UserId} Access Denied");
+                    return BadRequest(new ErrorModel(404, ex.Message));
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError($"Update Profile : {updateUser.UserId} Access Denied");
@@ -54,6 +60,11 @@ namespace PharmacyManagementSystem.Controllers
                 {
                     var result = await _userService.ViewProfile(Id);
                     return Ok(result);
+                }
+                catch (NoUserFound ex)
+                {
+                    _logger.LogError($"View Profile - No user Found Profile Id : {Id} Access Denied");
+                    return BadRequest(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {
@@ -76,6 +87,17 @@ namespace PharmacyManagementSystem.Controllers
                     var result = await _userService.ResetPassword(resetPassword);
                     return Ok(result);
                 }
+                catch(NoUserFound ex)
+                {
+                    _logger.LogError($"Reset Password - No user Found Profile Id : {resetPassword.UserId} Access Denied");
+                    return BadRequest(new ErrorModel(404, ex.Message));
+                }
+                catch(PasswordIncorrect ex)
+                {
+                    _logger.LogError($"Reset Password - Incorrect Password Profile Id : {resetPassword.UserId} Access Denied");
+                    return BadRequest(new ErrorModel(404, ex.Message));
+
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError($"Reset Password - Profile Id : {resetPassword.UserId} Access Denied");
@@ -96,6 +118,11 @@ namespace PharmacyManagementSystem.Controllers
                 {
                     var result = await _userService.DeleteProfile(Id);
                     return Ok(result);
+                }
+                catch (NoUserFound ex)
+                {
+                    _logger.LogError($"Delete Profile - No user Found Profile Id : {Id} Access Denied");
+                    return BadRequest(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {

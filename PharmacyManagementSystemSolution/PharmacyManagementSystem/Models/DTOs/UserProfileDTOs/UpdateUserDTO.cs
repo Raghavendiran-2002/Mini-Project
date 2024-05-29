@@ -4,7 +4,7 @@ namespace PharmacyManagementSystem.Services
 {
     public class UpdateUserDTO
     {
-        [Required]
+        [Required(ErrorMessage = "User id cannot be empty")]
         public int UserId { get; set; }
    
         public string Username { get; set; }

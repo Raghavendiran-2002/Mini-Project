@@ -21,7 +21,7 @@ namespace PharmacyManagementSystem.Services
         {
             var user = await _userRepo.Get(passwordDTO.UserId);
             if (user == null)
-                throw new NoUserFound($"User not found with Id : {passwordDTO.UserId}");
+                throw new NoUserFound($"User not found");
             ResetPasswordUser(user,passwordDTO.PreviousPassword, passwordDTO.NewPassword);
             await _userRepo.Update(user);
             ResetPasswordReturnDTO resetPasswordDTO = new ResetPasswordReturnDTO() { UserId = user.UserID, Role = user.Role };
@@ -54,7 +54,7 @@ namespace PharmacyManagementSystem.Services
         {
             var user =  await _userRepo.Get(updatedUser.UserId);
             if (user == null)
-                throw new NoUserFound($"User not found with Id : {updatedUser.UserId}");
+                throw new NoUserFound($"User not found");
             var updateUser = MapUpdateUserDTOToUser(user, updatedUser);
             user = await _userRepo.Update(updateUser);
             return MapUserToUserProfileReturnDTO(user);
@@ -76,7 +76,7 @@ namespace PharmacyManagementSystem.Services
         {
             var user = await _userRepo.Get(Id);
             if (user == null)
-                throw new NoUserFound($"User not found with Id : {Id}");
+                throw new NoUserFound($"User not found");
             UserProfileReturnDTO profile = MapUserToUserProfileReturnDTO(user);
             return profile;
         }

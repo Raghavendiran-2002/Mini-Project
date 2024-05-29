@@ -15,11 +15,7 @@ namespace PharmacyManagementSystem.Models.Repositories
         }
         public async override Task<User> Get(int key)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u=>u.UserID == key);
-            if(user == null)
-            {
-                throw new NoUserFound($"User not found with Id : {key}");
-            }
+            var user = await _context.Users.FirstOrDefaultAsync(u=>u.UserID == key);            
             return user;
         }
     }

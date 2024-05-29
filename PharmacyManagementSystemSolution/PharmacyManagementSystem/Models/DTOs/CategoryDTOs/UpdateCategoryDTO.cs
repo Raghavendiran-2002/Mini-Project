@@ -4,7 +4,7 @@ namespace PharmacyManagementSystem.Services
 {
     public class UpdateCategoryDTO
     {
-        [Required]
+        [Required(ErrorMessage = "Category id cannot be empty")]
         public int CategoryId { get; set; }
         [Required, MaxLength(50)]
         public string CategoryName { get; set; }

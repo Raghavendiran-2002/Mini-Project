@@ -13,7 +13,7 @@ namespace PharmacyManagementSystem.Models.DTOs.OrderDTOs
 
     public class OrderItemDto
     {
-        [Required]
+        [Required(ErrorMessage = "Product id cannot be empty")]
         public int ProductID { get; set; }
 
         [Required]
