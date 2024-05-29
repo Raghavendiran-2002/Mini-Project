@@ -56,7 +56,11 @@ namespace PharmacyManagementSystem.Context
                 .HasMany(p => p.Reviews)
                 .WithOne(r => r.Product)
                 .HasForeignKey(r => r.ProductID);         
-      
+
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.OrderItems)
+                .WithOne(oi => oi.Order)
+                .HasForeignKey(oi => oi.OrderID);
 
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.Payments)

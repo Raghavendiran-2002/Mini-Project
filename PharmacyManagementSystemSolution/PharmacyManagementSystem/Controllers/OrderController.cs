@@ -42,6 +42,27 @@ namespace PharmacyManagementSystem.Controllers
             return BadRequest("All details are not provided. Please check the object");
         }
         [Authorize]
+        [HttpDelete]
+        [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<Order>> CancelOrder(int orderId)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = await _orderService.CancelOrder(orderId);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"cancel Order : {orderId} Access Denied");
+                    return Unauthorized(new ErrorModel(401, ex.Message));
+                }
+            }
+            return BadRequest("All details are not provided. Please check the object");
+        }
+        [Authorize]
         [HttpGet("GetOrdersBy")]        
         [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]

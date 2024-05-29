@@ -1,4 +1,5 @@
-﻿using PharmacyManagementSystem.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.DTOs.OrderDTOs;
@@ -7,10 +8,10 @@ namespace PharmacyManagementSystem.Services
 {
     public class OrderService: IOrderService
     {
-        private readonly IRepository<int, Order> _orderRepo;
+        private readonly IOrderRepository<int, Order> _orderRepo;
         private readonly IProductRepository<int, Product> _productRepo;
 
-        public OrderService(IRepository<int ,Order> orderRepo, IProductRepository<int , Product> productRepo)
+        public OrderService(IOrderRepository<int ,Order> orderRepo, IProductRepository<int , Product> productRepo)
         {
             _orderRepo = orderRepo;
             _productRepo = productRepo;
@@ -82,6 +83,12 @@ namespace PharmacyManagementSystem.Services
            var order = await _orderRepo.Get(orderId);
             order.Status = status;
             order = await _orderRepo.Update(order);
+            return order;
+        }
+
+        public async Task<Order> CancelOrder(int orderId)
+        {
+            var order = await _orderRepo.CancelOrder(orderId);
             return order;
         }
     }
