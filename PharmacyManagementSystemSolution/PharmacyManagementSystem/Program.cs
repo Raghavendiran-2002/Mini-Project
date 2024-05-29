@@ -78,6 +78,7 @@ namespace PharmacyManagementSystem
             builder.Services.AddScoped<IRepository<int, ShoppingCartItem>, ShoppingCartItemRepository>();
             builder.Services.AddScoped<IOrderRepository<int, Order>, OrderRepository>();
             builder.Services.AddScoped<IRepository<int, Review>, ReviewRepository>();
+            builder.Services.AddScoped<IRepository<int ,Payment>, PaymentRepository>();
             #endregion
 
             #region services
@@ -90,6 +91,7 @@ namespace PharmacyManagementSystem
             builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IPaymentService,PaymentService>();
             #endregion
             var app = builder.Build();
 
