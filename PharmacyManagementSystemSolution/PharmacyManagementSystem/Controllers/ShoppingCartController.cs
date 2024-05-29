@@ -31,7 +31,7 @@ namespace PharmacyManagementSystem.Controllers
             {
                 try
                 {
-                    var result = await _shoppingCartService.GetAllCartByUserId(Id);
+                    var result = await _shoppingCartService.GetCartByUserId(Id);
                     return Ok(result);
                 }
                 catch (Exception ex)
@@ -44,9 +44,9 @@ namespace PharmacyManagementSystem.Controllers
         }
         [Authorize]
         [HttpPost]
-        [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ShoppingCartItem), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<ShoppingCart>> AddItemToCart(AddShoppingCartItemDTO addShoppingCartItemDTO)
+        public async Task<ActionResult<ShoppingCartItem>> AddItemToCart(AddShoppingCartItemDTO addShoppingCartItemDTO)
         {
             if (ModelState.IsValid)
             {
@@ -65,9 +65,9 @@ namespace PharmacyManagementSystem.Controllers
         }
         [Authorize]
         [HttpDelete]
-        [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ShoppingCartItem), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<ShoppingCart>> RemoveItemFromCart(int cartId)
+        public async Task<ActionResult<ShoppingCartItem>> RemoveItemFromCart(int cartId)
         {
             if (ModelState.IsValid)
             {
@@ -86,9 +86,9 @@ namespace PharmacyManagementSystem.Controllers
         }
         [Authorize]
         [HttpPut]
-        [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ShoppingCartItem), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<ShoppingCart>> UpdateItemInCart(UpdateItemInCartDTO updateItemInCartDTO)
+        public async Task<ActionResult<ShoppingCartItem>> UpdateItemInCart(UpdateItemInCartDTO updateItemInCartDTO)
         {
             if (ModelState.IsValid)
             {

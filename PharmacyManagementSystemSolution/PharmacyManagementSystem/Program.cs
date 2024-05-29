@@ -9,6 +9,7 @@ using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.Repositories;
 using PharmacyManagementSystem.Services;
+using System.Text.Json.Serialization;
 
 namespace PharmacyManagementSystem
 {
@@ -20,8 +21,8 @@ namespace PharmacyManagementSystem
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddControllers().AddJsonOptions(x =>
+               x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddLogging(l => l.AddLog4Net());
             builder.Services.AddSwaggerGen(option =>
@@ -75,7 +76,9 @@ namespace PharmacyManagementSystem
             builder.Services.AddScoped<IRepository<int, Category>, CategoryRepository>();
             builder.Services.AddScoped<IProductRepository<int, Product>, ProductRepository>();
             builder.Services.AddScoped<IRepository<int, Discount>, DiscountRepository>();
-            builder.Services.AddScoped<IRepository<int , ShoppingCart>, ShoppingCartRepository>();
+            builder.Services.AddScoped<IShoppingCartRepository<int , ShoppingCart>, ShoppingCartRepository>();
+            builder.Services.AddScoped<IRepository<int, ShoppingCartItem>, ShoppingCartItemRepository>();
+            builder.Services.AddScoped<IOrderRepository<int, Order>, OrderRepository>();
             #endregion
 
             #region services
@@ -86,6 +89,7 @@ namespace PharmacyManagementSystem
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IDiscountService, DiscountService>();
             builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
             #endregion
             var app = builder.Build();
 

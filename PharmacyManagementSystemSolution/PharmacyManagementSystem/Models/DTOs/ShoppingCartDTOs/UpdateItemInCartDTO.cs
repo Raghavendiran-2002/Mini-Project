@@ -5,6 +5,8 @@ namespace PharmacyManagementSystem.Models.DTOs.ShoppingCartDTOs
     public class UpdateItemInCartDTO
     {
         [Required]
+        public int CartItemID { get; set; }
+        [Required]
         public int CartID { get; set; }
         [Required]
         public int UserID { get; set; }

@@ -5,10 +5,10 @@ namespace PharmacyManagementSystem.Interfaces.Services
 {
     public interface IShoppingCartService
     {
-        public Task<ShoppingCart> AddItemToCart(AddShoppingCartItemDTO addShoppingCartDTO);
-        public Task<IEnumerable< ShoppingCart>> GetAllCartByUserId(int userId);
+        public Task<ShoppingCartItem> AddItemToCart(AddShoppingCartItemDTO addShoppingCartDTO);
+        public Task< ShoppingCart> GetCartByUserId(int userId);
 
-        public Task<ShoppingCart> UpdateItemInCart(UpdateItemInCartDTO updateItemInCartDTO);
-        public Task<ShoppingCart> RemoveItemFromCart(int cartId);
+        public Task<ShoppingCartItem> UpdateItemInCart(UpdateItemInCartDTO updateItemInCartDTO);
+        public Task<ShoppingCartItem> RemoveItemFromCart(int cartId);
     }
 }

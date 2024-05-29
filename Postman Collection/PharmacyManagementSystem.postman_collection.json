@@ -704,13 +704,234 @@
 			]
 		},
 		{
+			"name": "ShoppingCart",
+			"item": [
+				{
+					"name": "AddItemToCart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userID\": 1,\r\n  \"productID\": 3,\r\n  \"quantity\": 2,    \r\n  \"cartID\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5229/api/ShoppingCart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"ShoppingCart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCartItemByUserId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/ShoppingCart/GetCartByUserId?Id=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"ShoppingCart",
+								"GetCartByUserId"
+							],
+							"query": [
+								{
+									"key": "Id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCartItem",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cartItemID\": 0,\r\n  \"cartID\": 0,\r\n  \"userID\": 0,\r\n  \"productID\": 0,\r\n  \"quantity\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5229/api/ShoppingCart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"ShoppingCart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCartItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/ShoppingCart?cartId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"ShoppingCart"
+							],
+							"query": [
+								{
+									"key": "cartId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "PlaceOrder",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"shippingAddress\": \"5424\",\r\n  \"orderItems\": [\r\n    {\r\n      \"productID\": 2,\r\n      \"quantity\": 2\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5229/api/Order?userId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Order"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOrderById",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateOrderStatus",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Order?orderId=1&status=gfj",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Order"
+							],
+							"query": [
+								{
+									"key": "orderId",
+									"value": "1"
+								},
+								{
+									"key": "status",
+									"value": "gfj"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrderByUserId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5229/api/Order/GetUserOrders?userId=25",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5229",
+							"path": [
+								"api",
+								"Order",
+								"GetUserOrders"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "25"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Login",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"userId\": 4,\r\n  \"password\": \"123\"\r\n}",
+					"raw": "{\r\n  \"userId\": 1,\r\n  \"password\": \"123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -769,7 +990,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjMiLCJyb2xlIjoiQWRtaW4iLCJleHAiOjE3MTY4NjQwMjd9.WkbuRn7kSYlWwMrsC_VNPUQZN6-mW359lHXs9_0QIFY",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBJZCI6IjEiLCJyb2xlIjoiVXNlciIsImV4cCI6MTcxNjk3NTk3OX0.hKoINYuHeY4d2NajG4U7lmi_lSkqlKxiCwqXGH0LPlc",
 				"type": "string"
 			}
 		]

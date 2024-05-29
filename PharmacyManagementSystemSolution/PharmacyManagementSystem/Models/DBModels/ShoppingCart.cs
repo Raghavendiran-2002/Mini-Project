@@ -6,19 +6,16 @@ namespace PharmacyManagementSystem.Models.DBModels
     public class ShoppingCart
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CartID { get; set; }
+
         [Required]
         public int UserID { get; set; }
-        [Required]
-        public int ProductID { get; set; }
-        [Required]
-        public int Quantity { get; set; }
-        [Required]
-        public DateTime AddedAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [ForeignKey("UserID")]
         public User User { get; set; }
-        [ForeignKey("ProductID")]
-        public Product Product { get; set; }
+        public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
     }
 }

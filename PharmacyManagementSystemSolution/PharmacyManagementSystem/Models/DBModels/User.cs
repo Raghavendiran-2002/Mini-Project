@@ -23,9 +23,8 @@ namespace PharmacyManagementSystem.Models.DBModels
         public string Role { get; set; } = "Customer";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-
         public ICollection<Order> Orders { get; set; }
         public ICollection<Review> Reviews { get; set; }
-        public ICollection<ShoppingCart> ShoppingCarts { get; set; }
+       
     }
 }

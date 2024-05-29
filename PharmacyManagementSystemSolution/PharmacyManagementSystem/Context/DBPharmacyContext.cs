@@ -14,6 +14,7 @@ namespace PharmacyManagementSystem.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+           public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Payment> Payments { get; set; }
 
@@ -29,11 +30,12 @@ namespace PharmacyManagementSystem.Context
                 .HasMany(u => u.Reviews)
                 .WithOne(r => r.User)
                 .HasForeignKey(r => r.UserID);
+           
 
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.ShoppingCarts)
-                .WithOne(sc => sc.User)
-                .HasForeignKey(sc => sc.UserID);
+            modelBuilder.Entity<ShoppingCartItem>()
+                .HasOne(sci => sci.Product)
+                .WithMany(p => p.ShoppingCartItems)
+                .HasForeignKey(sci => sci.ProductID);
 
             modelBuilder.Entity<Category>()
                 .HasMany(c => c.Products)
@@ -53,12 +55,7 @@ namespace PharmacyManagementSystem.Context
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Reviews)
                 .WithOne(r => r.Product)
-                .HasForeignKey(r => r.ProductID);
-
-            modelBuilder.Entity<Product>()
-                .HasMany(p => p.ShoppingCarts)
-                .WithOne(sc => sc.Product)
-                .HasForeignKey(sc => sc.ProductID);
+                .HasForeignKey(r => r.ProductID);         
 
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderItems)
