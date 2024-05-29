@@ -17,12 +17,10 @@ namespace PharmacyManagementSystem
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
+            var builder = WebApplication.CreateBuilder(args);       
 
             builder.Services.AddControllers().AddJsonOptions(x =>
-               x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+               x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);    
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddLogging(l => l.AddLog4Net());
             builder.Services.AddSwaggerGen(option =>
@@ -79,6 +77,7 @@ namespace PharmacyManagementSystem
             builder.Services.AddScoped<IShoppingCartRepository<int , ShoppingCart>, ShoppingCartRepository>();
             builder.Services.AddScoped<IRepository<int, ShoppingCartItem>, ShoppingCartItemRepository>();
             builder.Services.AddScoped<IOrderRepository<int, Order>, OrderRepository>();
+            builder.Services.AddScoped<IRepository<int, Review>, ReviewRepository>();
             #endregion
 
             #region services
@@ -90,6 +89,7 @@ namespace PharmacyManagementSystem
             builder.Services.AddScoped<IDiscountService, DiscountService>();
             builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
             #endregion
             var app = builder.Build();
 
