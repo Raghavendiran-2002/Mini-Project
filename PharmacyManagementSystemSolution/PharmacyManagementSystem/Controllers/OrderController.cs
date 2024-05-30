@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PharmacyManagementSystem.Exceptions.Category;
+using PharmacyManagementSystem.Exceptions.Order;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.DTOs.OrderDTOs;
@@ -31,7 +33,17 @@ namespace PharmacyManagementSystem.Controllers
                 try
                 {
                     var result = await _orderService.PlaceOrder(userId, orderCreationDto);
-                    return Ok(result);
+                    return Created("Order Created", result);
+                }
+                catch (ProductNotFound ex)
+                {
+                    _logger.LogError($"Product Not Found");
+                    return NotFound(new ErrorModel(404, ex.Message));
+                }
+                catch (InSufficientStock ex)
+                {
+                    _logger.LogError($"Not product left");
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {
@@ -54,6 +66,11 @@ namespace PharmacyManagementSystem.Controllers
                     var result = await _orderService.CancelOrder(orderId);
                     return Ok(result);
                 }
+                catch (NoOrderFound ex)
+                {
+                    _logger.LogError($"No Order Found : {orderId}");
+                    return NotFound(new ErrorModel(404, ex.Message));
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError($"cancel Order : {orderId} Access Denied");
@@ -75,6 +92,11 @@ namespace PharmacyManagementSystem.Controllers
                     var result = await _orderService.GetOrderById(orderId);
                     return Ok(result);
                 }
+                catch (NoOrderFound ex)
+                {
+                    _logger.LogError($"No Order Found : {orderId}");
+                    return NotFound(new ErrorModel(404, ex.Message));
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError($"Order Id : {orderId} Access Denied");
@@ -95,7 +117,7 @@ namespace PharmacyManagementSystem.Controllers
                 {
                     var result = await _orderService.GetUserOrders(userId);
                     return Ok(result);
-                }
+                }                
                 catch (Exception ex)
                 {
                     _logger.LogError($"user Id Place Order : {userId} Access Denied");
@@ -116,6 +138,11 @@ namespace PharmacyManagementSystem.Controllers
                 {
                     var result = await _orderService.UpdateOrderStatus(orderId, status);
                     return Ok(result);
+                }
+                catch (NoOrderFound ex)
+                {
+                    _logger.LogError($"No Order Found : {orderId}");
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {

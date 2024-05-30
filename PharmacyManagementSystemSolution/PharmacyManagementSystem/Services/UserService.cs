@@ -1,5 +1,6 @@
 ﻿
 
+using PharmacyManagementSystem.Exceptions.Auth;
 using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
@@ -65,13 +66,23 @@ namespace PharmacyManagementSystem.Interfaces.Services
             try
             {
                 user = MapRegisterDTOToUser(newUser);
-                await _userRepo.Add(user);              
+                user = await _userRepo.Add(user);              
                 RegisterReturnDTO registerReturnDTO = MapUserToRegisterReturnDTO(user);
-                await _cartRepo.Add(new ShoppingCart() { UserID = registerReturnDTO.UserId });
+                var cart =  await _cartRepo.Add(new ShoppingCart() { UserID = registerReturnDTO.UserId });
+                if(cart == null)
+                {
+                    RolebackUser(user.UserID);
+                    throw new UserNotRegistered("User not Registered");
+                }
                 return registerReturnDTO;
             }
             catch (Exception ) {}
             throw new UnauthorizedAccessException("Invalid username and password");
+        }
+
+        private async void RolebackUser(int userID)
+        {
+            await _userRepo.Delete(userID);            
         }
 
         private  RegisterReturnDTO MapUserToRegisterReturnDTO(User user)

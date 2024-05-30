@@ -3,6 +3,7 @@ using PharmacyManagementSystem.Context;
 using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.DTOs.OrderDTOs;
+using PharmacyManagementSystem.Models.DTOs.ReviewDTOs;
 
 namespace PharmacyManagementSystem.Models.Repositories
 {
@@ -19,6 +20,7 @@ namespace PharmacyManagementSystem.Models.Repositories
         }
         public override async Task<IEnumerable<Order>> Get()
         {
+
             var order = await _context.Orders.Include(c => c.OrderItems).ToListAsync();
             return order;
         }
@@ -46,6 +48,14 @@ namespace PharmacyManagementSystem.Models.Repositories
              _context.Orders.Update(order);
             await _context.SaveChangesAsync();
             return order;
+        }
+
+        public async Task<bool> PurchasedProductForReview(int userId, ReviewCreationDto reviewDTO)
+        {
+            var hasPurchasedProduct = await _context.Orders
+                      .Include(o => o.OrderItems)
+                      .AnyAsync(o => o.UserID == userId && o.OrderItems.Any(oi => oi.ProductID == reviewDTO.ProductID));
+            return hasPurchasedProduct;
         }
     }
 }

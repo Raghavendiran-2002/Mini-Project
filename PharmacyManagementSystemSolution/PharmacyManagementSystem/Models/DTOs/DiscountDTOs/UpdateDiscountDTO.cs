@@ -4,7 +4,8 @@ namespace PharmacyManagementSystem.Models.DTOs.DiscountDTOs
 {
     public class UpdateDiscountDTO
     {
-        [Key]
+
+        [Required(ErrorMessage = "Discount id cannot be empty")]
         public int DiscountID { get; set; }
         [Required, MaxLength(50)]
         public string DiscountName { get; set; }

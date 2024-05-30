@@ -8,7 +8,7 @@ namespace PharmacyManagementSystem.Models.DTOs
         public int UserId { get; set; }
 
 
-        [MinLength(1, ErrorMessage = "Password has to be minmum 6 chars long")]
+        [MinLength(6, ErrorMessage = "Password has to be minmum 6 chars long")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Password cannot be empty")]
         public string Password { get; set; } = string.Empty;
     }

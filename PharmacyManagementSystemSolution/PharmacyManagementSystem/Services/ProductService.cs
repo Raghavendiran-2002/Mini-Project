@@ -1,4 +1,5 @@
-﻿using PharmacyManagementSystem.Interfaces.Repositories;
+﻿using PharmacyManagementSystem.Exceptions.Order;
+using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.DTOs.ProductDTOs;
@@ -37,12 +38,16 @@ namespace PharmacyManagementSystem.Services
         public Task<Product> DeleteProduct(int productId)
         {
             var product = _productRepo.Delete(productId);
+            if (product == null)
+                throw new ProductNotFound("Product Not Found");
             return product;
         }
 
         public Task<Product> GetProduct(int productId)
         {
            var product = _productRepo.Get(productId);
+            if (product == null)
+                throw new ProductNotFound("Product Not Found");
            return product;
         }
 
@@ -54,7 +59,9 @@ namespace PharmacyManagementSystem.Services
 
         public async Task<Product> UpdateProduct(UpdateProductDTO productDTO)
         {
-            Product product = await _productRepo.Get(productDTO.ProductID);            
+            Product product = await _productRepo.Get(productDTO.ProductID);
+            if (product == null)
+                throw new ProductNotFound("Product Not Found");
             product = await _productRepo.Update(MapUpdateProductDTOToProduct(product,productDTO));                 
             return product;
         }

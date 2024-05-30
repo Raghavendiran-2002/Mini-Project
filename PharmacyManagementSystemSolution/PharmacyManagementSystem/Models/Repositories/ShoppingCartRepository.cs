@@ -17,6 +17,11 @@ namespace PharmacyManagementSystem.Models.Repositories
                 .ThenInclude(i => i.Product)
                 .FirstOrDefaultAsync(c => c.UserID == key);
             return item;
-        } 
+        }
+        public override async Task<IEnumerable<ShoppingCart>> Get()
+        {
+            var items = await _context.ShoppingCarts.Include(c => c.ShoppingCartItems).ThenInclude(i => i.Product).ToListAsync();
+            return items;
+        }
     }
 }

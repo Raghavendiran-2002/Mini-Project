@@ -18,7 +18,7 @@ namespace PharmacyManagementUnitTest
     public class CategoryServiceTest
     {
         DBPharmacyContext context;
-        IRepository<int, Category> category;
+        ICategoryRepository<int, Category> category;
         ICategoryService categoryService;
         [SetUp]
         public void Setup() {

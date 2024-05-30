@@ -17,12 +17,10 @@ namespace PharmacyManagementSystem
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
+            var builder = WebApplication.CreateBuilder(args);       
 
             builder.Services.AddControllers().AddJsonOptions(x =>
-               x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+               x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);    
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddLogging(l => l.AddLog4Net());
             builder.Services.AddSwaggerGen(option =>
@@ -72,13 +70,15 @@ namespace PharmacyManagementSystem
 
             #region repositories
             builder.Services.AddScoped<IRepository<int, User>, UserRepository>();
-            builder.Services.AddScoped<IRepository<int, User>, UserProfileRepositoy>();
-            builder.Services.AddScoped<IRepository<int, Category>, CategoryRepository>();
+            builder.Services.AddScoped<IUserRepository<int, User>, UserProfileRepositoy>();
+            builder.Services.AddScoped<ICategoryRepository<int, Category>, CategoryRepository>();
             builder.Services.AddScoped<IProductRepository<int, Product>, ProductRepository>();
-            builder.Services.AddScoped<IRepository<int, Discount>, DiscountRepository>();
+            builder.Services.AddScoped<IDiscountRepository<int, Discount>, DiscountRepository>();
             builder.Services.AddScoped<IShoppingCartRepository<int , ShoppingCart>, ShoppingCartRepository>();
-            builder.Services.AddScoped<IRepository<int, ShoppingCartItem>, ShoppingCartItemRepository>();
+            builder.Services.AddScoped<IShoppingCartItemsRepository<int, ShoppingCartItem>, ShoppingCartItemRepository>();
             builder.Services.AddScoped<IOrderRepository<int, Order>, OrderRepository>();
+            builder.Services.AddScoped<IReviewRepository<int, Review>, ReviewRepository>();
+            builder.Services.AddScoped<IPaymentRepository<int ,Payment>, PaymentRepository>();
             #endregion
 
             #region services
@@ -90,6 +90,8 @@ namespace PharmacyManagementSystem
             builder.Services.AddScoped<IDiscountService, DiscountService>();
             builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IPaymentService,PaymentService>();
             #endregion
             var app = builder.Build();
 

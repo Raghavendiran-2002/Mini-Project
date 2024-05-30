@@ -12,7 +12,7 @@ using PharmacyManagementSystem.Context;
 namespace PharmacyManagementSystem.Migrations
 {
     [DbContext(typeof(DBPharmacyContext))]
-    [Migration("20240527095935_init")]
+    [Migration("20240529092515_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

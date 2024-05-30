@@ -1,4 +1,5 @@
-﻿using PharmacyManagementSystem.Interfaces.Repositories;
+﻿using PharmacyManagementSystem.Exceptions.Discount;
+using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.DTOs.DiscountDTOs;
@@ -7,9 +8,9 @@ namespace PharmacyManagementSystem.Services
 {
     public class DiscountService : IDiscountService
     {
-        private readonly IRepository<int, Discount> _discountRepo;
+        private readonly IDiscountRepository<int, Discount> _discountRepo;
 
-        public DiscountService(IRepository<int , Discount> discountRepo)
+        public DiscountService(IDiscountRepository<int , Discount> discountRepo)
         {
            _discountRepo = discountRepo;
         }
@@ -34,24 +35,29 @@ namespace PharmacyManagementSystem.Services
         public async Task<Discount> DeleteDiscount(int id)
         {
             Discount discount = await _discountRepo.Delete(id);
+            if(discount == null)
+                throw new NoDiscountFound("No discount found");
             return discount;
         }
 
         public async Task<Discount> GetDiscountById(int id)
         {
            Discount discount = await _discountRepo.Get(id);
+            if (discount == null)
+                throw new NoDiscountFound("No discount found");
             return discount;
         }
 
         public async Task<IEnumerable<Discount>> GetDiscounts()
         {
-            var discounts = await _discountRepo.Get();
+            var discounts = await _discountRepo.Get();          
             return discounts;
         }
 
         public async Task<Discount> UpdateDiscount(UpdateDiscountDTO updateDiscountDTO)
         {
             Discount discount = await _discountRepo.Get(updateDiscountDTO.DiscountID);
+            if(discount == null) throw new NoDiscountFound("No discount found");
             discount = MapUpdateDiscountToDiscount(updateDiscountDTO, discount);
             discount = await _discountRepo.Update(discount);
             return discount;

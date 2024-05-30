@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PharmacyManagementSystem.Exceptions.Discount;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.DTOs.DiscountDTOs;
@@ -32,6 +33,11 @@ namespace PharmacyManagementSystem.Controllers
                 {
                     var result = await _discountService.GetDiscountById(Id);
                     return Ok(result);
+                }
+                catch (NoDiscountFound ex)
+                {
+                    _logger.LogError($"Discount Id : {Id} Not Found");
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {
@@ -75,6 +81,11 @@ namespace PharmacyManagementSystem.Controllers
                     var result = await _discountService.UpdateDiscount(updateDiscountDTO);
                     return Ok(result);
                 }
+                catch (NoDiscountFound ex)
+                {
+                    _logger.LogError($"Discount Id : {updateDiscountDTO.DiscountID} Not Found");
+                    return NotFound(new ErrorModel(404, ex.Message));
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError($"Discount Id : {updateDiscountDTO.DiscountID} Access Denied");
@@ -94,7 +105,7 @@ namespace PharmacyManagementSystem.Controllers
                 try
                 {
                     var result = await _discountService.AddDiscount(addDiscountDTO);
-                    return Ok(result);
+                    return Created("Discount Created", result);
                 }
                 catch (Exception ex)
                 {
@@ -116,6 +127,11 @@ namespace PharmacyManagementSystem.Controllers
                 {
                     var result = await _discountService.DeleteDiscount(Id);
                     return Ok(result);
+                }
+                catch(NoDiscountFound ex)
+                {
+                    _logger.LogError($"Discount Id : {Id} Not Found");
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PharmacyManagementSystem.Exceptions.Order;
 using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
@@ -20,12 +21,14 @@ namespace PharmacyManagementSystem.Services
         public async Task<Order> GetOrderById(int orderId)
         {
            var order = await _orderRepo.Get(orderId);
+            if (order == null)
+                throw new NoOrderFound($"No Order found with Id : {orderId}");
            return order;
         }
 
         public async Task<IEnumerable<Order>> GetUserOrders(int userId)
         {
-            var order = (await _orderRepo.Get()).Where(o=>o.UserID == userId).ToList();
+            var order = (await _orderRepo.Get()).Where(o=>o.UserID == userId).ToList();            
             return order;
         }
 
@@ -39,12 +42,12 @@ namespace PharmacyManagementSystem.Services
                 var product = await _productRepo.Get(item.ProductID);
                 if (product == null)
                 {
-                    throw new Exception($"Product with ID {item.ProductID} not found.");
+                    throw new ProductNotFound($"Product with ID {item.ProductID} not found.");
                 }
 
                 if (product.Stock < item.Quantity)
                 {
-                    throw new Exception($"Insufficient stock for product {product.ProductName}.");
+                    throw new InSufficientStock($"Insufficient stock for product {product.ProductName}.");
                 }
 
                 product.Stock -= item.Quantity;
@@ -81,6 +84,8 @@ namespace PharmacyManagementSystem.Services
         public async Task<Order> UpdateOrderStatus(int orderId, string status)
         {
            var order = await _orderRepo.Get(orderId);
+            if(order == null)
+                throw new NoOrderFound($"No Order found with Id : {orderId}");
             order.Status = status;
             order = await _orderRepo.Update(order);
             return order;
@@ -89,6 +94,8 @@ namespace PharmacyManagementSystem.Services
         public async Task<Order> CancelOrder(int orderId)
         {
             var order = await _orderRepo.CancelOrder(orderId);
+            if(order == null)
+                throw new NoOrderFound($"No Order found with Id : {orderId}");
             return order;
         }
     }
