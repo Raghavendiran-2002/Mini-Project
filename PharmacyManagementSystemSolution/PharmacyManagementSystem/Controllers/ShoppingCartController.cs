@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PharmacyManagementSystem.Exceptions.ShoppingCart;
 using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
@@ -53,7 +54,7 @@ namespace PharmacyManagementSystem.Controllers
                 try
                 {
                     var result = await _shoppingCartService.AddItemToCart(addShoppingCartItemDTO);
-                    return Ok(result);
+                    return Created("Added item to Cart", result);
                 }
                 catch (Exception ex)
                 {
@@ -76,6 +77,11 @@ namespace PharmacyManagementSystem.Controllers
                     var result = await _shoppingCartService.RemoveItemFromCart(cartId);
                     return Ok(result);
                 }
+                catch(CartItemNotFound ex)
+                {
+                    _logger.LogError($"cart Id : {cartId} Not found");
+                    return NotFound(new ErrorModel(404, ex.Message));
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError($"cart Id : {cartId} Access Denied");
@@ -96,6 +102,11 @@ namespace PharmacyManagementSystem.Controllers
                 {
                     var result = await _shoppingCartService.UpdateItemInCart(updateItemInCartDTO);
                     return Ok(result);
+                }
+                catch (CartItemNotFound ex)
+                {
+                    _logger.LogError($"cart Id : {updateItemInCartDTO.CartID} Not found");
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {

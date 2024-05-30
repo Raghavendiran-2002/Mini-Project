@@ -38,7 +38,7 @@ namespace PharmacyManagementSystem.Controllers
                 catch (NoUserFound ex)
                 {
                     _logger.LogError($"Update Profile - No user Found Profile Id : {updateUser.UserId} Access Denied");
-                    return BadRequest(new ErrorModel(404, ex.Message));
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {
@@ -64,7 +64,7 @@ namespace PharmacyManagementSystem.Controllers
                 catch (NoUserFound ex)
                 {
                     _logger.LogError($"View Profile - No user Found Profile Id : {Id} Access Denied");
-                    return BadRequest(new ErrorModel(404, ex.Message));
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {
@@ -90,7 +90,7 @@ namespace PharmacyManagementSystem.Controllers
                 catch(NoUserFound ex)
                 {
                     _logger.LogError($"Reset Password - No user Found Profile Id : {resetPassword.UserId} Access Denied");
-                    return BadRequest(new ErrorModel(404, ex.Message));
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch(PasswordIncorrect ex)
                 {
@@ -122,7 +122,7 @@ namespace PharmacyManagementSystem.Controllers
                 catch (NoUserFound ex)
                 {
                     _logger.LogError($"Delete Profile - No user Found Profile Id : {Id} Access Denied");
-                    return BadRequest(new ErrorModel(404, ex.Message));
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {

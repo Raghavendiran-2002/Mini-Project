@@ -70,15 +70,15 @@ namespace PharmacyManagementSystem
 
             #region repositories
             builder.Services.AddScoped<IRepository<int, User>, UserRepository>();
-            builder.Services.AddScoped<IRepository<int, User>, UserProfileRepositoy>();
-            builder.Services.AddScoped<IRepository<int, Category>, CategoryRepository>();
+            builder.Services.AddScoped<IUserRepository<int, User>, UserProfileRepositoy>();
+            builder.Services.AddScoped<ICategoryRepository<int, Category>, CategoryRepository>();
             builder.Services.AddScoped<IProductRepository<int, Product>, ProductRepository>();
-            builder.Services.AddScoped<IRepository<int, Discount>, DiscountRepository>();
+            builder.Services.AddScoped<IDiscountRepository<int, Discount>, DiscountRepository>();
             builder.Services.AddScoped<IShoppingCartRepository<int , ShoppingCart>, ShoppingCartRepository>();
-            builder.Services.AddScoped<IRepository<int, ShoppingCartItem>, ShoppingCartItemRepository>();
+            builder.Services.AddScoped<IShoppingCartItemsRepository<int, ShoppingCartItem>, ShoppingCartItemRepository>();
             builder.Services.AddScoped<IOrderRepository<int, Order>, OrderRepository>();
-            builder.Services.AddScoped<IRepository<int, Review>, ReviewRepository>();
-            builder.Services.AddScoped<IRepository<int ,Payment>, PaymentRepository>();
+            builder.Services.AddScoped<IReviewRepository<int, Review>, ReviewRepository>();
+            builder.Services.AddScoped<IPaymentRepository<int ,Payment>, PaymentRepository>();
             #endregion
 
             #region services

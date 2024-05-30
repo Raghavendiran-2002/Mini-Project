@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PharmacyManagementSystem.Exceptions.Order;
 using PharmacyManagementSystem.Exceptions.Payments;
 using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
@@ -9,10 +10,10 @@ namespace PharmacyManagementSystem.Services
 {
     public class PaymentService : IPaymentService
     {
-        private readonly IRepository<int, Payment> _paymentRepo;
+        private readonly IPaymentRepository<int, Payment> _paymentRepo;
         private readonly IOrderRepository<int, Order> _orderRepo;
 
-        public PaymentService(IRepository<int, Payment> paymentRepo, IOrderRepository<int , Order> orderRepo)
+        public PaymentService(IPaymentRepository<int, Payment> paymentRepo, IOrderRepository<int , Order> orderRepo)
         {
             _paymentRepo = paymentRepo;
             _orderRepo = orderRepo;
@@ -54,11 +55,8 @@ namespace PharmacyManagementSystem.Services
         public async Task<IEnumerable<Payment>> GetPaymentsByOrder(int userId, int orderId)
         {
             var order = await _orderRepo.Get(orderId);
-            if (order == null || order.UserID != userId)
-            {
-                throw new OrderNotFound("Order not found or unauthorized access.");
-            }
-
+            if (order == null || order.UserID != userId)            
+                throw new OrderNotFound("Order not found or unauthorized access.");            
             return (await _paymentRepo.Get())
                                  .Where(p => p.OrderID == orderId)
                                  .ToList();
@@ -70,9 +68,12 @@ namespace PharmacyManagementSystem.Services
                                 .Where(o => o.UserID == userId)
                                 .Select(o => o.OrderID)
                                 .ToList();
+            if(orders == null)
+                throw new NoOrderFound($"No Order found with user Id : {userId}");
+
             var payment = (await _paymentRepo.Get())
                                  .Where(p => orders.Contains(p.OrderID))
-                                 .ToList();
+                                 .ToList();            
             return payment;
         }
     }

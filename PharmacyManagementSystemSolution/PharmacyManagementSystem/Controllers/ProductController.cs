@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PharmacyManagementSystem.Exceptions.Order;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.DTOs.ProductDTOs;
@@ -33,6 +34,11 @@ namespace PharmacyManagementSystem.Controllers
                 {
                     var result = await _productService.GetProduct(Id);
                     return Ok(result);
+                }
+                catch (ProductNotFound ex)
+                {
+                    _logger.LogError($"No Product Found : {Id}");
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {
@@ -161,6 +167,11 @@ namespace PharmacyManagementSystem.Controllers
                     var result = await _productService.UpdateProduct(updateProductDTO);
                     return Ok(result);
                 }
+                catch (ProductNotFound ex)
+                {
+                    _logger.LogError($"No Product Found : {updateProductDTO.ProductID}");
+                    return NotFound(new ErrorModel(404, ex.Message));
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError($"Product update : {updateProductDTO.ProductID} Access Denied");
@@ -180,7 +191,7 @@ namespace PharmacyManagementSystem.Controllers
                 try
                 {
                     var result = await _productService.AddProduct(addProductDTO);
-                    return Ok(result);
+                    return Created("Product Created", result);
                 }
                 catch (Exception ex)
                 {
@@ -202,6 +213,11 @@ namespace PharmacyManagementSystem.Controllers
                 {
                     var result = await _productService.DeleteProduct(Id);
                     return Ok(result);
+                }
+                catch (ProductNotFound ex)
+                {
+                    _logger.LogError($"No Product Found : {Id}");
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {

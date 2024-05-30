@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PharmacyManagementSystem.Exceptions.Order;
 using PharmacyManagementSystem.Exceptions.Review;
 using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
@@ -9,23 +10,23 @@ namespace PharmacyManagementSystem.Services
 {
     public class ReviewService : IReviewService
     {
-        private readonly IRepository<int, Review> _reviewRepo;
+        private readonly IReviewRepository<int, Review> _reviewRepo;
         private readonly IOrderRepository<int, Order> _orderRepo;
         private readonly IProductRepository<int, Product> _productRepo;
 
-        public ReviewService(IRepository<int ,Review> reviewRepo, IProductRepository<int , Product> productRepo, IOrderRepository<int ,Order> orderRepo)
+        public ReviewService(IReviewRepository<int ,Review> reviewRepo, IProductRepository<int , Product> productRepo, IOrderRepository<int ,Order> orderRepo)
         {
             _reviewRepo = reviewRepo;
             _orderRepo = orderRepo;
             _productRepo = productRepo;                
         }
 
-        public  async Task<Review> AddReviewAsync(int userId, ReviewCreationDto reviewDto)
+        public  async Task<Review> AddReview(int userId, ReviewCreationDto reviewDto)
         {          
-            var product = (await _productRepo.Get()).Where(r => r.ProductID==reviewDto.ProductID);
+            var product = (await _productRepo.Get()).FirstOrDefault(r => r.ProductID==reviewDto.ProductID);
             if (product == null)
             {
-                throw new Exception("Product not found.");
+                throw new ProductNotFound("Product not found.");
             }
 
 
@@ -48,7 +49,7 @@ namespace PharmacyManagementSystem.Services
             return review;
         }
 
-        public  async Task<IEnumerable<ReviewDto>> GetReviewsForProductAsync(int productId)
+        public  async Task<IEnumerable<ReviewDto>> GetReviewsForProduct(int productId)
         {
             var reviews = (await _reviewRepo.Get())
            .Where(r => r.ProductID == productId)

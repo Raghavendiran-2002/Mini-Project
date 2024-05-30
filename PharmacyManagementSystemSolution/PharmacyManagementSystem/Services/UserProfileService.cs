@@ -11,11 +11,13 @@ namespace PharmacyManagementSystem.Services
 {
     public class UserProfileService : IUserProfileService
     {
-        private readonly IRepository<int, User> _userRepo;
+        private readonly IUserRepository<int, User> _userRepo;
+        private readonly IShoppingCartRepository<int, ShoppingCart> _cartRepo;
 
-        public UserProfileService(IRepository<int, User> userRepo)
+        public UserProfileService(IUserRepository<int, User> userRepo, IShoppingCartRepository<int , ShoppingCart> cartRepo)
         {
             _userRepo = userRepo;
+            _cartRepo = cartRepo;
         }
         public async Task<ResetPasswordReturnDTO> ResetPassword(ResetPasswordDTO passwordDTO)
         {
@@ -100,6 +102,7 @@ namespace PharmacyManagementSystem.Services
             if (user == null)
                 throw new NoUserFound($"User not found with Id : {Id}");
             await _userRepo.Delete(Id);
+            await _cartRepo.Delete(Id);
             UserProfileReturnDTO profile = MapUserToUserProfileReturnDTO(user);
             return profile;
         }

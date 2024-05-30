@@ -33,11 +33,12 @@ namespace PharmacyManagementSystem.Controllers
                 try
                 {
                     var payment = await _paymentService.CreatePayment(userId, paymentDto);
-                    return Ok(payment);
+                    return Created("Payment Added", payment);
                 }
                 catch (OrderNotFound ex)
                 {
-                    return BadRequest(new ErrorModel(404, ex.Message));
+                    _logger.LogError($"Order not found");
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {
@@ -62,7 +63,8 @@ namespace PharmacyManagementSystem.Controllers
                 }
                 catch (OrderNotFound ex)
                 {
-                    return BadRequest(new ErrorModel(404, ex.Message));
+                    _logger.LogError($"Order not found");
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {
@@ -85,6 +87,11 @@ namespace PharmacyManagementSystem.Controllers
                     var payments = await _paymentService.GetAllPayments();
                     return Ok(payments);
                 }
+                catch (OrderNotFound ex)
+                {
+                    _logger.LogError($"Order not found");
+                    return NotFound(new ErrorModel(404, ex.Message));
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError($"user Id Payment  :  Access Denied");
@@ -105,6 +112,11 @@ namespace PharmacyManagementSystem.Controllers
                 {
                     var payments = await _paymentService.GetPaymentsByUser(userId);
                     return Ok(payments);
+                }
+                catch (OrderNotFound ex)
+                {
+                    _logger.LogError($"Order not found");
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {

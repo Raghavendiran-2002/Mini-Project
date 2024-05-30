@@ -48,25 +48,29 @@ namespace PharmacyManagementSystem.Controllers
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<RegisterReturnDTO>> Register(RegisterDTO userDTO)
         {
-            try
+            if (ModelState.IsValid)
             {
-                RegisterReturnDTO result = await _userService.Register(userDTO);
-                return Ok(result);
+                try
+                {
+                    RegisterReturnDTO result = await _userService.Register(userDTO);
+                    return Created("User Created", result);
+                }
+                catch (UserNotRegistered ex)
+                {
+                    return NotFound(new ErrorModel(404, ex.Message));
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    _logger.LogCritical("User not authenticated");
+                    return Unauthorized(new ErrorModel(401, ex.Message));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogCritical(ex.Message);
+                    return BadRequest(new ErrorModel(501, ex.Message));
+                }
             }
-            catch(UserNotRegistered ex)
-            {
-                return BadRequest(new ErrorModel(404, ex.Message));
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                _logger.LogCritical("User not authenticated");
-                return Unauthorized(new ErrorModel(401, ex.Message));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex.Message);
-                return BadRequest(new ErrorModel(501, ex.Message));
-            }
+            return BadRequest("All details are not provided. Please check teh object");
         }
     }
 }

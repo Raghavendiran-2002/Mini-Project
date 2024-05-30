@@ -7,6 +7,8 @@ using PharmacyManagementSystem.Models.DTOs;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.DTOs.CategoryDTOs;
 using PharmacyManagementSystem.Services;
+using PharmacyManagementSystem.Exceptions.Discount;
+using PharmacyManagementSystem.Exceptions.Category;
 
 namespace PharmacyManagementSystem.Controllers
 {
@@ -35,6 +37,11 @@ namespace PharmacyManagementSystem.Controllers
                     var result = await _categoryService.GetCategoryById(Id);
                     return Ok(result);
                 }
+                catch (NoCategoryFound ex)
+                {
+                    _logger.LogError($"Category Id : {Id} Not Found");
+                    return NotFound(new ErrorModel(404, ex.Message));
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError($"Category Id : {Id} Access Denied");
@@ -54,7 +61,7 @@ namespace PharmacyManagementSystem.Controllers
                 try
                 {
                     var result = await _categoryService.AddCategory(category);
-                    return Ok(result);
+                    return Created("Category Created", result);
                 }
                 catch (Exception ex)
                 {
@@ -98,6 +105,11 @@ namespace PharmacyManagementSystem.Controllers
                     var result = await _categoryService.DeleteCategory(Id);
                     return Ok(result);
                 }
+                catch (NoCategoryFound ex)
+                {
+                    _logger.LogError($"Category Id : {Id} Not Found");
+                    return NotFound(new ErrorModel(404, ex.Message));
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError($"Category Delete : Access Denied");
@@ -118,6 +130,11 @@ namespace PharmacyManagementSystem.Controllers
                 {
                     var result = await _categoryService.UpdateCategory(category);
                     return Ok(result);
+                }
+                catch (NoCategoryFound ex)
+                {
+                    _logger.LogError($"Category Id : {category.CategoryId} Not Found");
+                    return NotFound(new ErrorModel(404, ex.Message));
                 }
                 catch (Exception ex)
                 {

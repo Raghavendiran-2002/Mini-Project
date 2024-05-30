@@ -13,16 +13,26 @@ namespace PharmacyManagementSystem.Models.Repositories
         {
             
         }
+        public async override Task<Product> Get(int key)
+        {
+            var product = await _context.Products.Include(p => p.Category).Include(r => r.Reviews).FirstAsync(o=>o.ProductID == key);
+            return product;
+        }
+        public override async Task<IEnumerable<Product>> Get()
+        {
+            var products = await _context.Products.Include(p => p.Category).Include(r => r.Reviews).ToListAsync();
+            return products;
+        }
 
         public async Task<IEnumerable<Product>> GetAvailableProducts()
         {
-            var products = await _context.Products.Where(p=>p.Stock > 0).ToListAsync();
+            var products = await _context.Products.Include(r=>r.Reviews).Include(d=>d.Discount).Where(p=>p.Stock > 0).ToListAsync();
             return products;
         }
 
         public async Task<IEnumerable<Product>> GetProductByCategory(int categoryId)
         {
-            var products = await _context.Products.Where(p=>p.CategoryID == categoryId).ToListAsync();
+            var products = await _context.Products.Include(p=>p.Category).Include(r=>r.Reviews).Include(d=>d.Discount).Where(c=>c.CategoryID == categoryId).ToListAsync();
             if (products.Count == 0)
                 throw new NoProductFoundByName($"No product found by in Category {categoryId}");
             return products;
@@ -30,7 +40,7 @@ namespace PharmacyManagementSystem.Models.Repositories
 
         public async Task <IEnumerable< Product>> GetProductByName(string name)
         {
-            var products = await _context.Products.Where(p=>p.ProductName == name).ToListAsync();
+            var products = await _context.Products.Include(p => p.Category).Include(r => r.Reviews).Where(p=>p.ProductName == name).ToListAsync();
             if (products.Count == 0)
                 throw new NoProductFoundByName($"No product found by name {name}");
             return products;
@@ -38,7 +48,7 @@ namespace PharmacyManagementSystem.Models.Repositories
 
         public async Task<IEnumerable<Product>> GetProductsByPriceRange(int startPriceRange, int endPriceRange)
         {
-            var products = await _context.Products.Where(p=>p.Price > startPriceRange).Where(p=>p.Price < endPriceRange).ToListAsync();
+            var products = await _context.Products.Include(p => p.Category).Include(r => r.Reviews).Where(p=>p.Price > startPriceRange).Where(p=>p.Price < endPriceRange).ToListAsync();
             if (products.Count == 0)
                 throw new NoProductFoundByName($"No product found by price between {startPriceRange} and {endPriceRange}");
             return products;
