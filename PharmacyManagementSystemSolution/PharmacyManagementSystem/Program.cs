@@ -69,7 +69,7 @@ namespace PharmacyManagementSystem
             #endregion
 
             #region repositories
-            builder.Services.AddScoped<IRepository<int, User>, UserRepository>();
+            builder.Services.AddScoped<IUserRepository<int, User>, UserRepository>();
             builder.Services.AddScoped<IUserRepository<int, User>, UserProfileRepositoy>();
             builder.Services.AddScoped<ICategoryRepository<int, Category>, CategoryRepository>();
             builder.Services.AddScoped<IProductRepository<int, Product>, ProductRepository>();

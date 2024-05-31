@@ -15,7 +15,7 @@ namespace PharmacyManagementSystem.Models.Repositories
         }
         public async override Task<Product> Get(int key)
         {
-            var product = await _context.Products.Include(p => p.Category).Include(r => r.Reviews).FirstAsync(o=>o.ProductID == key);
+            var product = await _context.Products.Include(p => p.Category).Include(r => r.Reviews).FirstOrDefaultAsync(o=>o.ProductID == key);
             return product;
         }
         public override async Task<IEnumerable<Product>> Get()

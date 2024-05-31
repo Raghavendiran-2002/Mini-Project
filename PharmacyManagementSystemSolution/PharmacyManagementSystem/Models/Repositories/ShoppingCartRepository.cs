@@ -23,5 +23,21 @@ namespace PharmacyManagementSystem.Models.Repositories
             var items = await _context.ShoppingCarts.Include(c => c.ShoppingCartItems).ThenInclude(i => i.Product).ToListAsync();
             return items;
         }
+
+        public async Task<ShoppingCart> GetProfile(int key)
+        {
+
+            var item = await _context.ShoppingCarts.FirstOrDefaultAsync(c => c.CartID == key);
+            return item;
+        }
+        public override async Task<ShoppingCart> Delete(int key)
+        {
+            var cart = await  _context.ShoppingCarts.FirstOrDefaultAsync(c => c.CartID == key);
+            _entities.Remove(cart);
+            await _context.SaveChangesAsync();
+            return cart;
+
+         
+        }
     }
 }

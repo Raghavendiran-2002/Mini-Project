@@ -13,11 +13,11 @@ namespace PharmacyManagementSystem.Interfaces.Services
 {
     public class UserService : IUserService
     {
-        private readonly IRepository<int, User> _userRepo;
+        private readonly IUserRepository<int, User> _userRepo;
         private readonly ITokenService _tokenService;
         private readonly IShoppingCartRepository<int, ShoppingCart> _cartRepo;
 
-        public UserService(IRepository<int , User> userRepo,IShoppingCartRepository<int, ShoppingCart> cartRepo, ITokenService tokenService)
+        public UserService(IUserRepository<int , User> userRepo,IShoppingCartRepository<int, ShoppingCart> cartRepo, ITokenService tokenService)
         {
             _userRepo = userRepo;
             _tokenService = tokenService;

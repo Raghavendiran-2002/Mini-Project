@@ -15,7 +15,7 @@ namespace PharmacyManagementSystem.Models.Repositories
         }
         public async override Task<User> Get(int key)
         {
-            var user = await _context.Users.Include(e=>e.Orders).Include(r=>r.Reviews).FirstOrDefaultAsync(u=>u.UserID == key);            
+            var user = await _context.Users.FirstOrDefaultAsync(u=>u.UserID == key);            
             return user;
         }
     }

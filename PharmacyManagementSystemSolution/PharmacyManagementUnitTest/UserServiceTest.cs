@@ -5,11 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Moq;
 using PharmacyManagementSystem.Context;
 using PharmacyManagementSystem.Exceptions.General;
+using PharmacyManagementSystem.Exceptions.UserProfile;
 using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.DTOs;
 using PharmacyManagementSystem.Models.Repositories;
+using PharmacyManagementSystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +23,12 @@ namespace PharmacyManagementUnitTest
     public class UserServiceTest
     {
         DBPharmacyContext context;
-        [SetUp]
+        IUserRepository<int, User> user;
+        IUserRepository<int, User> userProfileRepo;
+        IShoppingCartRepository<int, ShoppingCart> cartRepo;
+        ITokenService token;
+        IUserService userService;
+      [SetUp]
         public void Setup()
         {
             DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder()
@@ -33,15 +40,17 @@ namespace PharmacyManagementUnitTest
         public async Task UserRegisteredAndLoginSuccessfull()
         {
             //Arrange
-            IRepository<int, User> user = new UserRepository(context);
+            user = new UserRepository(context);
+            userProfileRepo = new UserProfileRepositoy(context);
+            cartRepo = new ShoppingCartRepository(context);
             Mock<IConfigurationSection> configurationJWTSection = new Mock<IConfigurationSection>();
             configurationJWTSection.Setup(x => x.Value).Returns("This is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing");
             Mock<IConfigurationSection> congigTokenSection = new Mock<IConfigurationSection>();
             congigTokenSection.Setup(x => x.GetSection("JWT")).Returns(configurationJWTSection.Object);
             Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
             mockConfig.Setup(x => x.GetSection("TokenKey")).Returns(congigTokenSection.Object);
-            ITokenService token = new TokenService(mockConfig.Object);
-            IUserService userService = new UserService(user, token);
+            token = new TokenService(mockConfig.Object);
+            userService = new UserService(user,cartRepo, token);
             var reg = await userService.Register(new RegisterDTO()
             {
                 Username = "Pranav",
@@ -64,15 +73,16 @@ namespace PharmacyManagementUnitTest
         public async Task UserRegisteredAndLoginWithWrongPassword()
         {
             //Arrange
-            IRepository<int, User> user = new UserRepository(context);
+            user = new UserRepository(context);
+            cartRepo = new ShoppingCartRepository(context);
             Mock<IConfigurationSection> configurationJWTSection = new Mock<IConfigurationSection>();
             configurationJWTSection.Setup(x => x.Value).Returns("This is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing");
             Mock<IConfigurationSection> congigTokenSection = new Mock<IConfigurationSection>();
             congigTokenSection.Setup(x => x.GetSection("JWT")).Returns(configurationJWTSection.Object);
             Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
             mockConfig.Setup(x => x.GetSection("TokenKey")).Returns(congigTokenSection.Object);
-            ITokenService token = new TokenService(mockConfig.Object);
-            IUserService userService = new UserService(user, token);
+            token = new TokenService(mockConfig.Object);
+            userService = new UserService(user, cartRepo, token);
             var reg = await userService.Register(new RegisterDTO()
             {
                 Username = "Pranav",
@@ -96,23 +106,24 @@ namespace PharmacyManagementUnitTest
         public async Task UserRegisteredAndLoginWithWrongUserId()
         {
             //Arrange
-            IRepository<int, User> user = new UserRepository(context);
+            user = new UserRepository(context);
+            cartRepo = new ShoppingCartRepository(context);
             Mock<IConfigurationSection> configurationJWTSection = new Mock<IConfigurationSection>();
             configurationJWTSection.Setup(x => x.Value).Returns("This is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing");
             Mock<IConfigurationSection> congigTokenSection = new Mock<IConfigurationSection>();
             congigTokenSection.Setup(x => x.GetSection("JWT")).Returns(configurationJWTSection.Object);
             Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
             mockConfig.Setup(x => x.GetSection("TokenKey")).Returns(congigTokenSection.Object);
-            ITokenService token = new TokenService(mockConfig.Object);
-            IUserService userService = new UserService(user, token);
+            token = new TokenService(mockConfig.Object);
+            userService = new UserService(user,cartRepo,  token);
 
             //Action
             
             var result =  userService.Login(new LoginDTO() { UserId = 6, Password = "113" });
 
             //Assert
-            var ex = Assert.ThrowsAsync<ItemCannotBeNull>(() => result);
-            Assert.That(ex.Message, Is.EqualTo("6 cannot be null"));
+            var ex = Assert.ThrowsAsync<UnauthorizedAccessException>(() => result);
+            Assert.That(ex.Message, Is.EqualTo("Invalid username and password"));
            
         }
     }

@@ -102,8 +102,7 @@ namespace PharmacyManagementSystem.Services
             var user = await _userRepo.Get(Id);
             if (user == null)
                 throw new NoUserFound($"User not found with Id : {Id}");
-            await _userRepo.Delete(Id);
-            await _cartRepo.Delete(Id);
+            await _userRepo.Delete(Id);           
             UserProfileReturnDTO profile = MapUserToUserProfileReturnDTO(user);
             return profile;
         }

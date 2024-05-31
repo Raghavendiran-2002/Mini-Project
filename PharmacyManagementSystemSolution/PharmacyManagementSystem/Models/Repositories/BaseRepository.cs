@@ -12,7 +12,7 @@ namespace PharmacyManagementSystem.Models.Repositories
 
         public BaseRepository(DBPharmacyContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
             _entities = _context.Set<T>();
         }
 
@@ -44,7 +44,6 @@ namespace PharmacyManagementSystem.Models.Repositories
 
         public async virtual Task<T> Update(T item)
         {
-            if (item == null)        
             _entities.Update(item);
             await _context.SaveChangesAsync();
             return item;

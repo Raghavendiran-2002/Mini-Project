@@ -10,6 +10,8 @@ namespace PharmacyManagementSystem.Interfaces.Repositories
         public Task<T> Update(T item);
         public Task<T> Get(K key);
         public Task<IEnumerable<T>> Get();
+
+        public Task<T> GetProfile(K key);
     
     }
 }

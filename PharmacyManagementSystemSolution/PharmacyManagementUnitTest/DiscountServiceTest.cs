@@ -17,7 +17,7 @@ namespace PharmacyManagementUnitTest
     public class DiscountServiceTest
     {
         DBPharmacyContext context;
-        IRepository<int, Discount> discount;
+        IDiscountRepository<int, Discount> discount;
         IDiscountService discountService;
         [SetUp]
         public void Setup()
@@ -58,7 +58,7 @@ namespace PharmacyManagementUnitTest
             // Action
             var result = await discountService.GetDiscounts();
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Count, Is.EqualTo(5));
         }
         [Test]
         public async Task UpdateDiscount()

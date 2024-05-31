@@ -93,9 +93,7 @@ namespace PharmacyManagementSystem.Services
 
         public async Task<Order> CancelOrder(int orderId)
         {
-            var order = await _orderRepo.CancelOrder(orderId);
-            if(order == null)
-                throw new NoOrderFound($"No Order found with Id : {orderId}");
+            var order = await _orderRepo.CancelOrder(orderId);           
             return order;
         }
     }

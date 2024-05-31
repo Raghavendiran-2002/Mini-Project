@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PharmacyManagementSystem.Context;
+using PharmacyManagementSystem.Exceptions.Order;
 using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Models.DBModels;
 using PharmacyManagementSystem.Models.DTOs.OrderDTOs;
@@ -32,7 +33,7 @@ namespace PharmacyManagementSystem.Models.Repositories
 
             if (order == null)
             {
-                throw new Exception("Order not found.");
+                throw new NoOrderFound($"No Order found with Id : {orderId}");
             }
 
             foreach (var orderItem in order.OrderItems)

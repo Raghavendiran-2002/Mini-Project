@@ -24,28 +24,31 @@ namespace PharmacyManagementUnitTest
     public class UserProfileServiceTest
     {
         DBPharmacyContext context;
-        IRepository<int, User> user;
+        IUserRepository<int, User> user;
         ITokenService token;
         IUserService userService;
-       [SetUp]
+        IShoppingCartRepository<int, ShoppingCart> cartRepo;
+
+        [SetUp]
         public void Setup()
         {
             DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder()
-                                                        .UseInMemoryDatabase("dummyDsB");
+                                                        .UseInMemoryDatabase("DBProfile");
             context = new DBPharmacyContext(optionsBuilder.Options);
-            user = new UserRepository(context);
+            user = new UserRepository(context);                       
             Mock<IConfigurationSection> configurationJWTSection = new Mock<IConfigurationSection>();
             configurationJWTSection.Setup(x => x.Value).Returns("This is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing");
             Mock<IConfigurationSection> congigTokenSection = new Mock<IConfigurationSection>();
             congigTokenSection.Setup(x => x.GetSection("JWT")).Returns(configurationJWTSection.Object);
             Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
             mockConfig.Setup(x => x.GetSection("TokenKey")).Returns(congigTokenSection.Object);
-            token = new TokenService(mockConfig.Object);
-            userService = new UserService(user, token);
+            token = new TokenService(mockConfig.Object); 
+            cartRepo= new ShoppingCartRepository(context);
+            userService = new UserService(user, cartRepo, token);  
             userService.Register(new RegisterDTO()
             {
                 Username = "Pranav",
-                Password = "123",
+                Password = "123456",
                 Email = "pranav@gmail.com",
                 FullName = "Pranav",
                 Address = "string",
@@ -55,22 +58,33 @@ namespace PharmacyManagementUnitTest
             userService.Register(new RegisterDTO()
             {
                 Username = "Pranav",
-                Password = "123",
+                Password = "123456",
                 Email = "pranav@gmail.com",
                 FullName = "Pranav",
                 Address = "string",
                 PhoneNumber = "435346346",
                 Role = "Admin"
             });
+            userService.Register(new RegisterDTO()
+            {
+                Username = "Pranav",
+                Password = "123456",
+                Email = "pranav@gmail.com",
+                FullName = "Pranav",
+                Address = "string",
+                PhoneNumber = "435346346",
+                Role = "Admin"
+            });
+
         }
         [Test]
         public async Task ResetPasswordSucessfull() {
             // Arrange                              
             
-            IUserProfileService userProfileService = new UserProfileService(user);
+            IUserProfileService userProfileService = new UserProfileService(user,cartRepo);
             
             // Action
-            var result = await userProfileService.ResetPassword(new ResetPasswordDTO() { PreviousPassword="123" ,NewPassword="1234",UserId =1});
+            var result = await userProfileService.ResetPassword(new ResetPasswordDTO() { PreviousPassword="123456" ,NewPassword="123457",UserId =1});
 
             // Assert
             Assert.That(result.UserId, Is.EqualTo(1));           
@@ -80,7 +94,7 @@ namespace PharmacyManagementUnitTest
         public async Task ResetPasswordFail()
         {
             // Arrange                 
-            IUserProfileService userProfileService = new UserProfileService(user);
+            IUserProfileService userProfileService = new UserProfileService(user, cartRepo);
       
             // Action
             var results = userProfileService.ResetPassword(new ResetPasswordDTO() { PreviousPassword = "1263", NewPassword = "1234", UserId = 1 });
@@ -93,24 +107,24 @@ namespace PharmacyManagementUnitTest
         public async Task ResetPasswordWithWrongUserId()
         {
             // Arrange                   
-            IUserProfileService userProfileService = new UserProfileService(user);     
+            IUserProfileService userProfileService = new UserProfileService(user, cartRepo);     
 
             // Action
             var result = userProfileService.ResetPassword(new ResetPasswordDTO() { PreviousPassword = "1263", NewPassword = "1234", UserId = 8 });
 
             // Assert
-            var ex = Assert.ThrowsAsync<ItemCannotBeNull>(() => result);
-            Assert.That(ex.Message, Is.EqualTo("8 cannot be null"));
+            var ex = Assert.ThrowsAsync<NoUserFound>(() => result);
+            Assert.That(ex.Message, Is.EqualTo("User not found"));
         }
         [Test]
         public async Task UpdateProfileSuccess()
         {
             // Arrange                   
-            IUserProfileService userProfileService = new UserProfileService(user);
+            IUserProfileService userProfileService = new UserProfileService(user, cartRepo);
 
             // Action
             var result = await userProfileService.UpdateProfile(new UpdateUserDTO() {
-                UserId = 1,
+                UserId = 2,
                 Username = "Pranav",             
                 Email = "dumm@gmail.com",
                 FullName = "Pranav",
@@ -126,7 +140,7 @@ namespace PharmacyManagementUnitTest
         public async Task ViewProfileSuccess()
         {
             // Arrange                   
-            IUserProfileService userProfileService = new UserProfileService(user);
+            IUserProfileService userProfileService = new UserProfileService(user, cartRepo);
 
             // Action
             var result = await userProfileService.ViewProfile(1);
@@ -137,14 +151,14 @@ namespace PharmacyManagementUnitTest
         [Test]
         public async Task DeleteProfileSuccess()
         {
-            // Arrange                   
-            IUserProfileService userProfileService = new UserProfileService(user);
+            // Arrange            
+            IUserProfileService userProfileService = new UserProfileService(user,cartRepo);
 
             // Action
-            var result = await userProfileService.DeleteProfile(2);
+            var result = await userProfileService.DeleteProfile(3);
 
             // Assert
-            Assert.That(result.UserId, Is.EqualTo(2));
+            Assert.That(result.UserId, Is.EqualTo(3));
         }
     }
 }

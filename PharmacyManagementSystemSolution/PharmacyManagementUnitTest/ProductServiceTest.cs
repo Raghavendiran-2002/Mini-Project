@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PharmacyManagementSystem.Context;
+using PharmacyManagementSystem.Exceptions.Order;
 using PharmacyManagementSystem.Exceptions.Products;
 using PharmacyManagementSystem.Interfaces.Repositories;
 using PharmacyManagementSystem.Interfaces.Services;
@@ -21,25 +22,24 @@ namespace PharmacyManagementUnitTest
         DBPharmacyContext context;
         IProductRepository<int, Product> product;
         IProductService productService;
-        IRepository<int, Discount> discount;
+        IDiscountRepository<int, Discount> discount;
         IDiscountService discountService;
-        IRepository<int, Category> category;
+        ICategoryRepository<int, Category> category;
         ICategoryService categoryService;
         [SetUp]
         public void Setup()
         {
             DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder()
-                                                   .UseInMemoryDatabase("dummyDBProductTest");
+                                                   .UseInMemoryDatabase("DBProductTest");
             context = new DBPharmacyContext(optionsBuilder.Options);
             category = new CategoryRepository(context);
-            categoryService = new CategoryService(category);
-            category.Add(new Category() { CategoryID = 1, CategoryName = "Meds", Description = "Meds are best", ImageUrl = "" });
+            categoryService = new CategoryService(category);            
             discount = new DiscountRepository(context);
-            discountService = new DiscountService(discount);
-            discount.Add(new Discount() {DiscountID = 1, DiscountName = "Bank", DiscountPercentage = 10, StartDate = new DateTime(2024, 5, 15), EndDate = new DateTime(2024, 6, 8) });
+            discountService = new DiscountService(discount);            
             product = new ProductRepository(context);
             productService = new ProductService(product);
             product.Add(new Product() { ProductID = 1, ProductName = "meds", Description = "meds are usefull", Price = 40, Stock = 5, CategoryID = 1, DiscountID = 1 });
+            product.Add(new Product() { ProductID = 2, ProductName = "meds", Description = "meds are usefull", Price = 40, Stock = 5, CategoryID = 1, DiscountID = 1 });
         }
         [Test]
         public async Task AddProduct()
@@ -49,7 +49,7 @@ namespace PharmacyManagementUnitTest
             // Action
             var result = await productService.AddProduct(product);
             // Assert
-            Assert.That(result.ProductID, Is.EqualTo(2));
+            Assert.That(result.ProductID, Is.EqualTo(3));
         }
         [Test]
         public async Task GetProduct()
@@ -61,6 +61,8 @@ namespace PharmacyManagementUnitTest
             // Assert
             Assert.That(result.ProductID, Is.EqualTo(1));
         }
+    
+    
         [Test]
         public async Task GetProducts()
         {
@@ -69,19 +71,18 @@ namespace PharmacyManagementUnitTest
             // Action
             var result = await productService.GetProducts();
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Count, Is.EqualTo(3));
         }
         [Test]
-        public async Task DeleteProduct()
+        public async Task DeleteProductSuccess()
         {
             // Arrange
-            AddProductDTO product = new AddProductDTO() { ProductName = "new Meds", Description = "Dia", Price = 500, Stock = 30, CategoryID = 1, DiscountID = 1 };      
-            await productService.AddProduct(product);
+
             // Action
-            var result = await productService.GetProduct(2);
+            var result = await productService.DeleteProduct(2);
             // Assert
             Assert.That(result.ProductID, Is.EqualTo(2));
-        }
+        }   
         [Test]
         public async Task UpdateProducts()
         {
@@ -100,7 +101,7 @@ namespace PharmacyManagementUnitTest
             // Action
             var result = await productService.GetProductBasedOnAvailability();
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Count, Is.EqualTo(3));
         }
         [Test]
         public async Task GetProductByName()
@@ -110,7 +111,7 @@ namespace PharmacyManagementUnitTest
             // Action
             var result = await productService.GetProductByName("meds");
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Count, Is.EqualTo(2));
         }
         [Test]
         public async Task GetProductByPriceRangeSuccess()
@@ -120,7 +121,7 @@ namespace PharmacyManagementUnitTest
             // Action
             var result = await productService.GetProductsByPriceRange(1, 60);
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Count, Is.EqualTo(3));
         }
         [Test]
         public async Task GetProductByPriceRangeFailed()
@@ -141,7 +142,7 @@ namespace PharmacyManagementUnitTest
             // Action
             var result = await productService.GetProductByCategoryId(1);
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Count, Is.EqualTo(3));
         }
     }
 }

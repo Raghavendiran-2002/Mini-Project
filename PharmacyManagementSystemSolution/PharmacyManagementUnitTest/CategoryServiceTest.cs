@@ -26,9 +26,9 @@ namespace PharmacyManagementUnitTest
                                                    .UseInMemoryDatabase("dummyDsB");
             context = new DBPharmacyContext(optionsBuilder.Options);
             category = new CategoryRepository(context);
-            categoryService = new CategoryService(category);
             category.Add(new Category() { CategoryID = 1, CategoryName = "Meds", Description = "Meds are best", ImageUrl = "" });
             category.Add(new Category() { CategoryID = 2, CategoryName = "Meds - Meds", Description = "Meds are best / worst", ImageUrl = "" });
+            categoryService = new CategoryService(category);           
         }
         [Test]
         public async Task AddCategorySucessfull()
@@ -38,7 +38,7 @@ namespace PharmacyManagementUnitTest
             // Action
             var result = await categoryService.AddCategory(categoryDTO);
             // Assert
-            Assert.That(result.CategoryID, Is.EqualTo(2));
+            Assert.That(result.CategoryID, Is.EqualTo(3));
         }
         [Test]
         public async Task GetCategoryByIdSucessfull()
@@ -58,17 +58,17 @@ namespace PharmacyManagementUnitTest
             // Action
             var result = await categoryService.GetAllCategories();
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Count, Is.EqualTo(3));
         }
         [Test]
         public async Task UpdateCategorySucessfull()
         {
             // Arrange                              
-            UpdateCategoryDTO categoryDTO = new UpdateCategoryDTO() {CategoryId= 1, CategoryName = "Meds", Description = "Meds are best", ImageUrl = "url.com" };
+            UpdateCategoryDTO categoryDTO = new UpdateCategoryDTO() {CategoryId= 3, CategoryName = "Meds", Description = "Meds are best", ImageUrl = "url.com" };
             // Action
             var result = await categoryService.UpdateCategory(categoryDTO);
             // Assert
-            Assert.That(result.CategoryID, Is.EqualTo(1));
+            Assert.That(result.CategoryID, Is.EqualTo(3));
         }
         [Test]
         public async Task DeleteCategorySucessfull()

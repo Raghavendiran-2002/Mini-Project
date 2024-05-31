@@ -4,7 +4,7 @@ using PharmacyManagementSystem.Models.DBModels;
 
 namespace PharmacyManagementSystem.Models.Repositories
 {
-    public class UserRepository : BaseRepository<int , User>, IRepository<int , User>
+    public class UserRepository : BaseRepository<int , User>, IUserRepository<int , User>
     {
         public UserRepository(DBPharmacyContext context) : base(context)
         {
