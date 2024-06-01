@@ -17,10 +17,10 @@ namespace PharmacyManagementSystem
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);       
+            var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers().AddJsonOptions(x =>
-               x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);    
+               x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddLogging(l => l.AddLog4Net());
             builder.Services.AddSwaggerGen(option =>
@@ -74,11 +74,11 @@ namespace PharmacyManagementSystem
             builder.Services.AddScoped<ICategoryRepository<int, Category>, CategoryRepository>();
             builder.Services.AddScoped<IProductRepository<int, Product>, ProductRepository>();
             builder.Services.AddScoped<IDiscountRepository<int, Discount>, DiscountRepository>();
-            builder.Services.AddScoped<IShoppingCartRepository<int , ShoppingCart>, ShoppingCartRepository>();
+            builder.Services.AddScoped<IShoppingCartRepository<int, ShoppingCart>, ShoppingCartRepository>();
             builder.Services.AddScoped<IShoppingCartItemsRepository<int, ShoppingCartItem>, ShoppingCartItemRepository>();
             builder.Services.AddScoped<IOrderRepository<int, Order>, OrderRepository>();
             builder.Services.AddScoped<IReviewRepository<int, Review>, ReviewRepository>();
-            builder.Services.AddScoped<IPaymentRepository<int ,Payment>, PaymentRepository>();
+            builder.Services.AddScoped<IPaymentRepository<int, Payment>, PaymentRepository>();
             #endregion
 
             #region services
@@ -91,7 +91,7 @@ namespace PharmacyManagementSystem
             builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
-            builder.Services.AddScoped<IPaymentService,PaymentService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
             #endregion
             var app = builder.Build();
 
@@ -104,10 +104,14 @@ namespace PharmacyManagementSystem
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
 
             app.MapControllers();
-
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<DBPharmacyContext>();
+                dbContext.Database.Migrate();
+            }
             app.Run();
         }
     }
