@@ -35,7 +35,8 @@ namespace PharmacyManagementSystem.Services
             };
 
             payment = await _paymentRepo.Add(payment);
-            
+            if (order.TotalAmount > paymentDto.Amount)
+                throw new PaymentNotSuccessfull("Payment not successfull");
 
             if (order.TotalAmount <= paymentDto.Amount)
             {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PharmacyManagementSystem.Exceptions.Payments;
@@ -12,6 +13,8 @@ namespace PharmacyManagementSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyCors")]
+
     public class PaymentController : ControllerBase
     {
         private readonly ILogger<PaymentController> _logger;
@@ -74,7 +77,7 @@ namespace PharmacyManagementSystem.Controllers
             }
             return BadRequest("All details are not provided. Please check the object");
         }
-        [Authorize]
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("AllPayments")]
         [ProducesResponseType(typeof(Payment), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]

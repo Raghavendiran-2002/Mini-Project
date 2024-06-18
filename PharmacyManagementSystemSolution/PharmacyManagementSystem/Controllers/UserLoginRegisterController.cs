@@ -1,4 +1,5 @@
 ﻿using log4net.Core;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PharmacyManagementSystem.Exceptions.Auth;
@@ -10,6 +11,7 @@ namespace PharmacyManagementSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyCors")]
     public class UserLoginRegisterController : ControllerBase
     {
         private readonly ILogger<UserLoginRegisterController> _logger;

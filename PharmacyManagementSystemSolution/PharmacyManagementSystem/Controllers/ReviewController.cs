@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PharmacyManagementSystem.Exceptions.Order;
@@ -13,6 +14,8 @@ namespace PharmacyManagementSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyCors")]
+
     public class ReviewController : ControllerBase
     {
         private readonly ILogger<ReviewController> _logger;
@@ -59,9 +62,9 @@ namespace PharmacyManagementSystem.Controllers
             {
                 try
                 {
-                    await _reviewService.AddReview(userId, reviewDto);
+                    var res = await _reviewService.AddReview(userId, reviewDto);
                     var result = (nameof(GetReviewsForProduct), new { productId = reviewDto.ProductID }, reviewDto);
-                    return Created("User Created", result);
+                    return Created("User Created", res);
                 }
                 catch (ProductNotFound ex)
                 {

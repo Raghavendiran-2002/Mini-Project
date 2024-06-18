@@ -48,7 +48,6 @@ namespace PharmacyManagementSystem.Models.Repositories
             _entities.Update(item);
             await _context.SaveChangesAsync();
             return item;
-
         }
     }
 }
