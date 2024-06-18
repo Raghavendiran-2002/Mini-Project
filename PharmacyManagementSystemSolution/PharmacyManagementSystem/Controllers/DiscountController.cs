@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PharmacyManagementSystem.Exceptions.Discount;
@@ -11,6 +12,8 @@ namespace PharmacyManagementSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyCors")]
+
     public class DiscountController : ControllerBase
     {
         private readonly ILogger<DiscountController> _logger;
@@ -68,7 +71,7 @@ namespace PharmacyManagementSystem.Controllers
             }
             return BadRequest("All details are not provided. Please check the object");
         }
-        [Authorize]
+        [Authorize(Policy = "AdminOnly")]
         [HttpPut("updateDiscount")]
         [ProducesResponseType(typeof(Discount), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
@@ -94,7 +97,7 @@ namespace PharmacyManagementSystem.Controllers
             }
             return BadRequest("All details are not provided. Please check the object");
         }
-        [Authorize]
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost("AddDiscount")]
         [ProducesResponseType(typeof(Discount), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
@@ -115,7 +118,7 @@ namespace PharmacyManagementSystem.Controllers
             }
             return BadRequest("All details are not provided. Please check the object");
         }
-        [Authorize]
+        [Authorize(Policy = "AdminOnly")]
         [HttpDelete]
         [ProducesResponseType(typeof(Discount), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]

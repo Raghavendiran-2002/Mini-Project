@@ -9,11 +9,14 @@ using PharmacyManagementSystem.Models.DTOs.CategoryDTOs;
 using PharmacyManagementSystem.Services;
 using PharmacyManagementSystem.Exceptions.Discount;
 using PharmacyManagementSystem.Exceptions.Category;
+using Microsoft.AspNetCore.Cors;
 
 namespace PharmacyManagementSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyCors")]
+
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
@@ -50,7 +53,7 @@ namespace PharmacyManagementSystem.Controllers
             }
             return BadRequest("All details are not provided. Please check the object");
         }
-        [Authorize]
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost()]
         [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
@@ -92,7 +95,7 @@ namespace PharmacyManagementSystem.Controllers
             }
             return BadRequest("All details are not provided. Please check the object");
         }
-        [Authorize]
+        [Authorize(Policy = "AdminOnly")]
         [HttpDelete()]
         [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
@@ -118,7 +121,7 @@ namespace PharmacyManagementSystem.Controllers
             }
             return BadRequest("All details are not provided. Please check the object");
         }
-        [Authorize]
+        [Authorize(Policy = "AdminOnly")]
         [HttpPut()]
         [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PharmacyManagementSystem.Exceptions.UserProfile;
@@ -12,6 +13,7 @@ namespace PharmacyManagementSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyCors")]
     public class UserProfileController : ControllerBase
     {
         private readonly IUserProfileService _userService;
