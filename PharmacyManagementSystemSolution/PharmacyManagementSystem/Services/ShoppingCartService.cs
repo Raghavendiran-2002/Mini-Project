@@ -20,7 +20,12 @@ namespace PharmacyManagementSystem.Services
         }
 
         public async Task<ShoppingCartItem> AddItemToCart(AddShoppingCartItemDTO addShoppingCartDTO)
-        {                        
+        {
+            var product = await _productRepo.Get(addShoppingCartDTO.ProductID);
+            if (product.Stock < addShoppingCartDTO.Quantity)
+                throw new InvalidDataException("Quantity is not available");
+            product.Stock -= addShoppingCartDTO.Quantity;
+            await _productRepo.Update(product);
             ShoppingCartItem cartItem = MapAddShoppingCartItemDTOToShoppingCartItem(addShoppingCartDTO);
             var item = (await _shoppingCartItem.Add(cartItem));
             return item;
@@ -37,14 +42,18 @@ namespace PharmacyManagementSystem.Services
 
         public async Task<ShoppingCart> GetCartByUserId(int userId)
         {
-            var cart = await _shoppingRepo.Get(userId);          
+            var cart = await _shoppingRepo.Get(userId);
             return cart;
         }
 
         public async Task<ShoppingCartItem> RemoveItemFromCart(int ShoppingCartItemId)
         {
+            var cartItem = await _shoppingCartItem.Get(ShoppingCartItemId);
+            var product = await _productRepo.Get(cartItem.ProductID);
+            product.Stock += cartItem.Quantity;
+            await _productRepo.Update(product);
             var cart = await _shoppingCartItem.Delete(ShoppingCartItemId);
-            if(cart == null)
+            if (cart == null)
                 throw new CartItemNotFound("Cart item not found");
             return cart;
         }
@@ -54,7 +63,7 @@ namespace PharmacyManagementSystem.Services
             ShoppingCartItem cartItem = (await _shoppingCartItem.Get(updateItemInCartDTO.CartItemID));
             if (cartItem == null)
                 throw new CartItemNotFound("Cart item not found");
-            ShoppingCart usercart = (await _shoppingRepo.Get(updateItemInCartDTO.CartID));            
+            ShoppingCart usercart = (await _shoppingRepo.Get(updateItemInCartDTO.CartID));
             cartItem = MapUpdateCartItemDTOtoShoppingCartItem(cartItem, updateItemInCartDTO);
             cartItem = await _shoppingCartItem.Update(cartItem);
             return cartItem;
