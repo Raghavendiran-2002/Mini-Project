@@ -14,5 +14,8 @@ namespace PharmacyManagementSystem.Models.DTOs.PaymentDTOs
         [Required]
         public string PaymentMethod { get; set; }
         public DateTime PaymentDate { get; set; } = DateTime.Now;
+
+        [Required]
+        public int Status { get; set; }
     }
 }
