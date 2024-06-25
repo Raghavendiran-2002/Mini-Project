@@ -20,22 +20,43 @@ namespace PharmacyManagementSystem.Controllers
         private readonly ILogger<ShoppingCartController> _logger;
         private readonly IShoppingCartService _shoppingCartService;
 
-        public ShoppingCartController(IShoppingCartService shoppingCartService,ILogger<ShoppingCartController> logger )
+        public ShoppingCartController(IShoppingCartService shoppingCartService, ILogger<ShoppingCartController> logger)
         {
             _logger = logger;
             _shoppingCartService = shoppingCartService;
         }
         [Authorize]
         [HttpGet("GetCartByUserId")]
-        [ProducesResponseType(typeof(IEnumerable< ShoppingCart>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ShoppingCart>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult <IEnumerable<ShoppingCart>>> GetAllCartByUserId(int Id)
+        public async Task<ActionResult<IEnumerable<ShoppingCart>>> GetAllCartByUserId(int Id)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     var result = await _shoppingCartService.GetCartByUserId(Id);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Shopping cart User Id : {Id} Access Denied");
+                    return Unauthorized(new ErrorModel(401, ex.Message));
+                }
+            }
+            return BadRequest("All details are not provided. Please check the object");
+        }
+        [Authorize]
+        [HttpDelete("DeleteCartByUserId")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<int>> RemoveCartItemByCartId(int Id)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = await _shoppingCartService.DeleteCartItemByUserId(Id);
                     return Ok(result);
                 }
                 catch (Exception ex)
@@ -80,7 +101,7 @@ namespace PharmacyManagementSystem.Controllers
                     var result = await _shoppingCartService.RemoveItemFromCart(cartId);
                     return Ok(result);
                 }
-                catch(CartItemNotFound ex)
+                catch (CartItemNotFound ex)
                 {
                     _logger.LogError($"cart Id : {cartId} Not found");
                     return NotFound(new ErrorModel(404, ex.Message));

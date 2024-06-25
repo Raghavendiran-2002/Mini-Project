@@ -69,6 +69,15 @@ namespace PharmacyManagementSystem.Services
             return cartItem;
         }
 
+        public async Task<int> DeleteCartItemByUserId(int cartId)
+        {
+            var cart = await _shoppingRepo.Get(cartId);
+            if (cart == null)
+                throw new CartItemNotFound("Cart item not found");
+            cart.ShoppingCartItems.Clear();
+            await _shoppingRepo.Update(cart);
+            return cartId;
+        }
         private ShoppingCartItem MapUpdateCartItemDTOtoShoppingCartItem(ShoppingCartItem cartItem, UpdateItemInCartDTO updateItemInCartDTO)
         {
             cartItem.ProductID = updateItemInCartDTO.ProductID;
