@@ -33,7 +33,7 @@ namespace PharmacyManagementSystem.Services
 
         public async Task<Category> DeleteCategory(int Id)
         {
-            var deleteCategory =await _categoryRepo.Delete(Id);
+            var deleteCategory = await _categoryRepo.Delete(Id);
             if (deleteCategory == null)
                 throw new NoCategoryFound("No Category Found");
             return deleteCategory;
@@ -50,21 +50,20 @@ namespace PharmacyManagementSystem.Services
             var getCategory = await _categoryRepo.Get(Id);
             if (getCategory == null)
                 throw new NoCategoryFound("No Category Found");
-            return getCategory; 
+            return getCategory;
         }
 
-        public async Task<Category> UpdateCategory(UpdateCategoryDTO category)
+        public async Task<Category> UpdateCategory(UpdateCategoryDTO updateCategory)
         {
-            Category updateCategory = MapUpdateCategoryDTOToCategory(category);
-            updateCategory = await _categoryRepo.Update(updateCategory);
-            if (updateCategory == null)
+            Category category = await _categoryRepo.Get(updateCategory.CategoryId);
+            if (category == null)
                 throw new NoCategoryFound("No Category Found");
-            return updateCategory;
+            category = await _categoryRepo.Update(MapUpdateCategoryDTOToCategory(category, updateCategory));
+            return category;
         }
 
-        private Category MapUpdateCategoryDTOToCategory(UpdateCategoryDTO categoryDTO)
+        private Category MapUpdateCategoryDTOToCategory(Category category, UpdateCategoryDTO categoryDTO)
         {
-            Category category = new Category();
             category.CategoryID = categoryDTO.CategoryId;
             category.CategoryName = categoryDTO.CategoryName;
             category.Description = categoryDTO.Description;
