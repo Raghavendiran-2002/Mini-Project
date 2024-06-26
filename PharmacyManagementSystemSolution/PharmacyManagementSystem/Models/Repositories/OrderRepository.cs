@@ -7,11 +7,11 @@ using PharmacyManagementSystem.Models.DTOs.ReviewDTOs;
 
 namespace PharmacyManagementSystem.Models.Repositories
 {
-    public class OrderRepository : BaseRepository<int , Order> , IOrderRepository<int ,Order>
+    public class OrderRepository : BaseRepository<int, Order>, IOrderRepository<int, Order>
     {
-        public OrderRepository(DBPharmacyContext context) : base(context) 
+        public OrderRepository(DBPharmacyContext context) : base(context)
         {
-            
+
         }
 
         public override Task<Order> Get(int key)
@@ -24,7 +24,7 @@ namespace PharmacyManagementSystem.Models.Repositories
             var order = await _context.Orders.Include(c => c.OrderItems).ToListAsync();
             return order;
         }
-        public  async Task<Order> CancelOrder(int orderId)
+        public async Task<Order> CancelOrder(int orderId)
         {
             var order = await _context.Orders
          .Include(o => o.OrderItems)
@@ -40,12 +40,17 @@ namespace PharmacyManagementSystem.Models.Repositories
                 var product = await _context.Products.FindAsync(orderItem.ProductID);
                 if (product != null)
                 {
-                    product.Stock += orderItem.Quantity; 
+                    product.Stock += orderItem.Quantity;
                 }
             }
-
+            var payment = _context.Payments.Where(p => p.OrderID == orderId).FirstOrDefault();
+            if (payment != null)
+            {
+                payment.Status = "Refunded";
+            }
+            _context.Payments.Update(payment);
             order.Status = "Cancelled";
-             _context.Orders.Update(order);
+            _context.Orders.Update(order);
             await _context.SaveChangesAsync();
             return order;
         }
